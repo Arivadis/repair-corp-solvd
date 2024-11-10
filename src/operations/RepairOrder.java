@@ -1,29 +1,33 @@
+package operations;
+
+import resources.Device;
+import staff.Customer;
+import support.IdGenerator;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-public class RepairOrder {
+public class RepairOrder extends Order {
 
-    private final int id;
     private final LocalDateTime orderDay;
     private LocalDateTime repairedTime;
     private Customer customer;
-    private Device[] device;
+    private Device[] devices;
     private RepairType repairType;
     private BigDecimal estimateCost;
     private DeliverOrder deliverOrder;
-    private final List<PartsOrder> partsOrders;
+    private PartsOrder[] partsOrders;
     private boolean complete;
 
-    public RepairOrder(int repairId) {
-        this.id = repairId;
+    public RepairOrder() {
+        super(IdGenerator.getInstance().createId());
         orderDay = LocalDateTime.now();
-        partsOrders = new ArrayList<>();
+        partsOrders = new PartsOrder[0];
         estimateCost = BigDecimal.ZERO;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -47,12 +51,12 @@ public class RepairOrder {
         this.customer = customer;
     }
 
-    public Device[] getDevice() {
-        return device;
+    public Device[] getDevices() {
+        return devices;
     }
 
-    public void setDevice(Device[] device) {
-        this.device = device;
+    public void setDevices(Device[] devices) {
+        this.devices = devices;
     }
 
     public RepairType getRepairType() {
@@ -79,12 +83,26 @@ public class RepairOrder {
         this.deliverOrder = deliverOrder;
     }
 
-    public List<PartsOrder> getPartsOrders() {
+    public PartsOrder[] getPartsOrders() {
         return partsOrders;
     }
 
     public void addPartsOrder(PartsOrder partsOrder) {
-        partsOrders.add(partsOrder);
+        PartsOrder[] newPartsOrders = Arrays.copyOf(partsOrders, partsOrders.length + 1);
+        newPartsOrders[newPartsOrders.length - 1] = partsOrder;
+        partsOrders = newPartsOrders;
+    }
+
+    public void removePartsOrder(int index) {
+        PartsOrder[] newPartsOrders = new PartsOrder[partsOrders.length - 1];
+        for (int i = 0; i < newPartsOrders.length; i++) {
+            if (i >= index) {
+                newPartsOrders[i] = partsOrders[i + 1];
+            } else {
+                newPartsOrders[i] = partsOrders[i];
+            }
+        }
+        partsOrders = newPartsOrders;
     }
 
     public boolean getComplete() {
@@ -94,13 +112,4 @@ public class RepairOrder {
     public void setComplete() {
         complete = !complete;
     }
-
-    public void doRepair(Employee master) {
-        System.out.println(master + "is working on the device");
-    }
-
-    public void orderingParts(int orderId) {
-        System.out.println("Ordering parts for ID" + orderId);
-    }
-
 }

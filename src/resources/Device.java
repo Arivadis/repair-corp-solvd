@@ -1,3 +1,5 @@
+package resources;
+
 public class Device {
 
     private long imei;

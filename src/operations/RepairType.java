@@ -1,3 +1,7 @@
+package operations;
+
+import staff.Employee;
+
 public class RepairType {
 
     private Employee master;
@@ -5,7 +9,7 @@ public class RepairType {
     private String comments;
 
     public RepairType() {
-
+        // empty constructor to extend later
     }
 
     public Employee getMaster() {

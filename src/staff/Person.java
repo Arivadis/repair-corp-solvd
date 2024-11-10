@@ -1,10 +1,16 @@
-public class Person {
+package staff;
 
-    private String name;
-    private String surname;
-    private int age;
+import support.IdGenerator;
 
-    public Person(String name, String surname, int age) {
+public abstract class Person {
+
+    protected long id;
+    protected String name;
+    protected String surname;
+    protected int age;
+
+    protected Person(String name, String surname, int age, long id) {
+        this.id = id;
         if (age < 0 || age > 150) {
             throw new IllegalArgumentException("Age can not be less 0 or more 150");
         }

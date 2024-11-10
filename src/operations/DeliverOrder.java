@@ -1,10 +1,16 @@
+package operations;
 import java.time.LocalDate;
+import support.IdGenerator;
 
-public class DeliverOrder {
+public class DeliverOrder extends Order {
 
     private String address;
     private Double weight;
     private LocalDate deliveryDay;
+
+    public DeliverOrder() {
+        super(IdGenerator.getInstance().createId());
+    }
 
     public Double getWeight() {
         return weight;
