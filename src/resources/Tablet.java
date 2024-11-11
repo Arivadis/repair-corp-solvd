@@ -54,9 +54,9 @@ public class Tablet extends Device {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Tablet laptop = (Tablet) obj;
-        return Objects.equals(getMade(), laptop.getMade()) &&
-                Objects.equals(getModel(), laptop.getModel()) &&
+        Tablet tablet = (Tablet) obj;
+        return Objects.equals(getMade(), tablet.getMade()) &&
+                Objects.equals(getModel(), tablet.getModel()) &&
                 imei == ((Tablet) obj).imei &&
                 networkType == ((Tablet) obj).networkType;
     }

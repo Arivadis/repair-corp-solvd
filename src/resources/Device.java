@@ -1,5 +1,7 @@
 package resources;
 
+import java.util.Objects;
+
 public class Device {
 
     protected String made;
@@ -33,6 +35,20 @@ public class Device {
     @Override
     public String toString() {
         return (made + model);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getMade(), getModel());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Device device = (Device) obj;
+        return Objects.equals(made, device.getMade()) &&
+                Objects.equals(made, device.getModel());
     }
 
     public enum NetworkType {

@@ -5,6 +5,7 @@ import staff.Employee;
 import support.IdGenerator;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class DeliverOrder extends Order {
 
@@ -12,6 +13,7 @@ public class DeliverOrder extends Order {
     private Double weight;
     private LocalDate deliveryDay;
     private Employee deliveryMan;
+    private LocalDateTime deliveredTime;
 
     public DeliverOrder() {
         super(IdGenerator.getInstance().createId());
@@ -57,9 +59,24 @@ public class DeliverOrder extends Order {
         this.deliveryMan = deliveryMan;
     }
 
+    public LocalDateTime getDeliveredTime() {
+        return deliveredTime;
+    }
+
+    public void setDeliveredTime(LocalDateTime deliveredTime) {
+        this.deliveredTime = deliveredTime;
+    }
+
     public void setComplete() {
         complete = !complete;
-        System.out.println(complete ? "The delivery order is complete now" : "Something went wrong -> the delivery order is uncompleted now");
+        if (complete) {
+            deliveryMan.setStatusReady(true);
+            deliveredTime = LocalDateTime.now();
+        } else {
+            deliveryMan.setStatusReady(false);
+            deliveredTime = null;
+        }
+        System.out.println(complete ? "The delivery order is complete now -> " + id : "Something went wrong -> the delivery order is uncompleted now -> " + id);
     }
 
     @Override

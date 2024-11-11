@@ -105,6 +105,11 @@ public class RepairOrder extends Order {
 
     public void setComplete() {
         complete = !complete;
+        if (complete) {
+            setRepairedTime(LocalDateTime.now());
+        } else {
+            setRepairedTime(null);
+        }
         System.out.println(complete ? "The repair order is complete now " + id : "Something went wrong -> the repair order is uncompleted now " + id);
     }
 

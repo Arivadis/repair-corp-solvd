@@ -40,9 +40,9 @@ public class Mobile extends Device {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Mobile laptop = (Mobile) obj;
-        return Objects.equals(getMade(), laptop.getMade()) &&
-                Objects.equals(getModel(), laptop.getModel()) &&
+        Mobile mobile = (Mobile) obj;
+        return Objects.equals(getMade(), mobile.getMade()) &&
+                Objects.equals(getModel(), mobile.getModel()) &&
                 imei == ((Mobile) obj).imei &&
                 networkType == ((Mobile) obj).networkType;
     }

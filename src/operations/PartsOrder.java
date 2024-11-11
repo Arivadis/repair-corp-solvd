@@ -10,10 +10,13 @@ public class PartsOrder extends Order {
     private String warehouse;
     private BigDecimal cost;
     private String[] parts;
+    private String[] partsOrdered;
+    private boolean paid;
 
     public PartsOrder() {
         super(IdGenerator.getInstance().createId());
         parts = new String[0];
+        partsOrdered = new String[0];
     }
 
     public long getId() {
@@ -58,9 +61,17 @@ public class PartsOrder extends Order {
         parts = newPartsArray;
     }
 
+    public boolean getPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
     public void setComplete() {
         complete = !complete;
-        System.out.println(complete ? "The parts order is complete now" : "Something went wrong -> the parts order is uncompleted now");
+        System.out.println(complete ? "The parts order is complete now " + id : "Something went wrong -> the parts order is uncompleted now " + id);
     }
 
     @Override

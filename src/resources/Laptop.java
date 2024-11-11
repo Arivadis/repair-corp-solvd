@@ -51,8 +51,8 @@ public class Laptop extends Device {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Laptop laptop = (Laptop) obj;
-        return Double.compare(laptop.screenSize, screenSize) == 0 &&
-                Double.compare(laptop.batteryHours, batteryHours) == 0 &&
+        return Double.compare(screenSize, laptop.screenSize) == 0 &&
+                Double.compare(batteryHours, laptop.batteryHours) == 0 &&
                 camera == laptop.camera &&
                 Objects.equals(getMade(), laptop.getMade()) &&
                 Objects.equals(getModel(), laptop.getModel());
