@@ -1,4 +1,5 @@
 package support;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -12,7 +13,8 @@ public class IdGenerator {
     private long delivOrder = 0;
     private long unknown = 0;
 
-    private IdGenerator() {}
+    private IdGenerator() {
+    }
 
     public static IdGenerator getInstance() {
         if (instance == null) {
@@ -25,7 +27,6 @@ public class IdGenerator {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 
         if (stackTrace.length > 3) {
-            System.out.println(stackTrace[3].getClassName());
             return stackTrace[3].getClassName();
         } else {
             return "Unknown";

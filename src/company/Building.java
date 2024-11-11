@@ -9,11 +9,11 @@ public abstract class Building {
     protected BigDecimal rentCost;
     protected boolean rentalStatus;
 
-    public Building() {
+    protected Building() {
 
     }
 
-    public Building(String address, double area, BigDecimal rentCost) {
+    protected Building(String address, double area, BigDecimal rentCost) {
         this.address = address;
         this.area = area;
         this.rentCost = rentCost;

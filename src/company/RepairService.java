@@ -1,6 +1,10 @@
 package company;
 
+import operations.DeliverOrder;
+import operations.Order;
+import operations.PartsOrder;
 import operations.RepairOrder;
+import resources.Device;
 import staff.Employee;
 
 import java.math.BigDecimal;
@@ -41,9 +45,9 @@ public class RepairService extends Building {
     }
 
     public void addEmployee(Employee employee) {
-        Employee[] newEmployes = Arrays.copyOf(employees, employees.length + 1);
-        newEmployes[newEmployes.length - 1] = employee;
-        employees = newEmployes;
+        Employee[] newEmployees = Arrays.copyOf(employees, employees.length + 1);
+        newEmployees[newEmployees.length - 1] = employee;
+        employees = newEmployees;
     }
 
     public void removeEmployee(Employee employee) {
@@ -91,4 +95,48 @@ public class RepairService extends Building {
     public void addRepairedCount() {
         totalRepaired++;
     }
+
+    public void processOrder(Order order) {
+        if (order instanceof DeliverOrder deliverOrder) {
+            Employee deliveryMan = null;
+            for (Employee employee : employees) {
+                if (employee.getHired() && employee.getPosition() == Employee.JobPosition.DELIVERY && employee.statusReady()) {
+                    deliveryMan = employee;
+                    deliveryMan.setStatusReady(false);
+                    System.out.println("Delivery man has been set " + deliveryMan.getName() + " " + deliveryMan.getSurname() + "\n");
+                    break;
+                }
+            }
+            if (deliveryMan != null) {
+                deliverOrder.setDeliveryMan(deliveryMan);
+                deliveryMan.notifyPerson("\nNew delivery order ->\n");
+                deliverOrder.getCustomer().notifyPerson("\n Your delivery -> " + order + "\n");
+                deliverOrder.setComplete();
+                deliveryMan.setStatusReady(true);
+            } else {
+                System.out.println("Something went wrong, check an order to find issues\n");
+            }
+
+        } else if (order instanceof RepairOrder repairOrder) {
+            System.out.println("Order date/time " + repairOrder.getTime() + "\n");
+            if (repairOrder.getDevices() != null) {
+                System.out.println("Devices to repair ");
+                for (Device device : repairOrder.getDevices()) {
+                    System.out.println(device);
+                }
+            }
+            if (repairOrder.getPartsOrders() != null) {
+                System.out.println("Check the parts to order ");
+            } else {
+                System.out.println("Repairing with no orders ");
+            }
+            if (repairOrder.getEstimateCost() != null) {
+                System.out.println("Charge client for " + repairOrder.getEstimateCost() + "\n");
+            }
+        } else if (order instanceof PartsOrder partsOrder) {
+            System.out.println(partsOrder);
+        }
+
+    }
+
 }

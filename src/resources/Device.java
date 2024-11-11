@@ -2,26 +2,16 @@ package resources;
 
 public class Device {
 
-    private long imei;
-    private String made;
-    private String model;
+    protected String made;
+    protected String model;
 
     public Device() {
 
     }
 
-    public Device(long imei, String made, String model) {
-        this.imei = imei;
+    public Device(String made, String model) {
         this.model = model;
         this.made = made;
-    }
-
-    public long getImei() {
-        return imei;
-    }
-
-    public void setImei(long imei) {
-        this.imei = imei;
     }
 
     public String getMade() {
@@ -38,5 +28,16 @@ public class Device {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    @Override
+    public String toString() {
+        return (made + model);
+    }
+
+    public enum NetworkType {
+        THREE_G,
+        FOUR_G,
+        FIVE_G
     }
 }

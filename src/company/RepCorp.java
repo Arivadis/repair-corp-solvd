@@ -1,5 +1,7 @@
 package company;
 
+import staff.Employee;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 
@@ -45,13 +47,22 @@ public class RepCorp extends Building {
     public void closeService(String name) {
         RepairService[] newServices = new RepairService[services.length - 1];
         int shift = 0;
+        RepairService closedService = null;
         for (int i = 0; i < newServices.length; i++) {
             if (services[i].getName().equals(name)) {
                 shift = 1;
+                closedService = services[i];
             }
             newServices[i] = services[i + shift];
         }
         services = newServices;
+        if (closedService != null) {
+            for (Employee employee : closedService.getEmployees()) {
+                if (employee.getHired()) {
+                    employee.hire();
+                }
+            }
+        }
     }
 
     public int getTotalRepaired() {
@@ -63,8 +74,7 @@ public class RepCorp extends Building {
     }
 
     @Override
-    public String toString(){
-        String companyInfo = "";
-        return "Company " + name + "\nCapital " + initCapital + "\nLocated " + address + "Services";
+    public String toString() {
+        return "\nCompany " + name + "\nCapital " + initCapital + "\nLocated " + address + "Services\n";
     }
 }

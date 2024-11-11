@@ -57,4 +57,20 @@ public class PartsOrder extends Order {
         }
         parts = newPartsArray;
     }
+
+    public void setComplete() {
+        complete = !complete;
+        System.out.println(complete ? "The parts order is complete now" : "Something went wrong -> the parts order is uncompleted now");
+    }
+
+    @Override
+    public String toString() {
+        String partsString = "";
+        if (parts != null) {
+            for (String part : parts) {
+                partsString += part + " ";
+            }
+        }
+        return "Parts order info \n" + partsString + "\nWarehouse " + warehouse + "\nCost " + cost;
+    }
 }

@@ -10,19 +10,17 @@ import java.util.Arrays;
 
 public class RepairOrder extends Order {
 
-    private final LocalDateTime orderDay;
+    private final LocalDateTime time;
     private LocalDateTime repairedTime;
-    private Customer customer;
     private Device[] devices;
     private RepairType repairType;
     private BigDecimal estimateCost;
     private DeliverOrder deliverOrder;
     private PartsOrder[] partsOrders;
-    private boolean complete;
 
     public RepairOrder() {
         super(IdGenerator.getInstance().createId());
-        orderDay = LocalDateTime.now();
+        time = LocalDateTime.now();
         partsOrders = new PartsOrder[0];
         estimateCost = BigDecimal.ZERO;
     }
@@ -31,8 +29,8 @@ public class RepairOrder extends Order {
         return id;
     }
 
-    public LocalDateTime getOrderDay() {
-        return orderDay;
+    public LocalDateTime getTime() {
+        return time;
     }
 
     public LocalDateTime getRepairedTime() {
@@ -105,11 +103,15 @@ public class RepairOrder extends Order {
         partsOrders = newPartsOrders;
     }
 
-    public boolean getComplete() {
-        return complete;
-    }
-
     public void setComplete() {
         complete = !complete;
+        System.out.println(complete ? "The repair order is complete now " + id : "Something went wrong -> the repair order is uncompleted now " + id);
+    }
+
+    @Override
+    public String toString() {
+        String output = "Repair order info\nID " + id + "\nTime " + time + "\n Customer " + customer.toString() + "\nEstimate Cost " + estimateCost.toString();
+        System.out.println(output);
+        return output;
     }
 }
