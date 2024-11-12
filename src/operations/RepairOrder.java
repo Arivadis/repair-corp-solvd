@@ -110,7 +110,7 @@ public class RepairOrder extends Order {
             return;
         }
         complete = true;
-        setRepairedTime(LocalDateTime.now());
+        repairedTime = LocalDateTime.now();
         System.out.println("The repair order is complete now " + id);
     }
 
@@ -121,7 +121,7 @@ public class RepairOrder extends Order {
             return;
         }
         complete = false;
-        setRepairedTime(null);
+        repairedTime = null;
         System.out.println("The repair order is incomplete now " + id);
     }
 
