@@ -84,7 +84,8 @@ public class Main {
         repairOrder1.addPartsOrder(partsOrder1);
 
         repairOrder1.setComplete();
-        repairOrder1.setRepairedTime(LocalDateTime.now());
+        repairOrder1.setIncomplete();
+        // incomplete again
 
         DeliverOrder deliverOrder = new DeliverOrder();
         deliverOrder.setCustomer(customer1);

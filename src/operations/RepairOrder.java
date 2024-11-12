@@ -103,14 +103,26 @@ public class RepairOrder extends Order {
         partsOrders = newPartsOrders;
     }
 
+    @Override
     public void setComplete() {
-        complete = !complete;
         if (complete) {
-            setRepairedTime(LocalDateTime.now());
-        } else {
-            setRepairedTime(null);
+            System.out.println("The repair order was already complete!" + id);
+            return;
         }
-        System.out.println(complete ? "The repair order is complete now " + id : "Something went wrong -> the repair order is uncompleted now " + id);
+        complete = true;
+        setRepairedTime(LocalDateTime.now());
+        System.out.println("The repair order is complete now " + id);
+    }
+
+    @Override
+    public void setIncomplete() {
+        if (!complete) {
+            System.out.println("The repair order was already incomplete!" + id);
+            return;
+        }
+        complete = false;
+        setRepairedTime(null);
+        System.out.println("The repair order is incomplete now " + id);
     }
 
     @Override

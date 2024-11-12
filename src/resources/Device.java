@@ -48,7 +48,7 @@ public class Device {
         if (obj == null || getClass() != obj.getClass()) return false;
         Device device = (Device) obj;
         return Objects.equals(made, device.getMade()) &&
-                Objects.equals(made, device.getModel());
+                Objects.equals(model, device.getModel());
     }
 
     public enum NetworkType {

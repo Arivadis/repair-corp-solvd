@@ -69,9 +69,24 @@ public class PartsOrder extends Order {
         this.paid = paid;
     }
 
+    @Override
     public void setComplete() {
-        complete = !complete;
-        System.out.println(complete ? "The parts order is complete now " + id : "Something went wrong -> the parts order is uncompleted now " + id);
+        if (complete) {
+            System.out.println("The parts order was already complete!" + id);
+            return;
+        }
+        complete = true;
+        System.out.println("The parts order is complete now " + id);
+    }
+
+    @Override
+    public void setIncomplete() {
+        if (!complete) {
+            System.out.println("The parts order was already incomplete!" + id);
+            return;
+        }
+        complete = false;
+        System.out.println("The parts order is incomplete now " + id);
     }
 
     @Override

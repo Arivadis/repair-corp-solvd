@@ -17,4 +17,6 @@ public abstract class Order {
     }
 
     protected abstract void setComplete();
+
+    protected abstract void setIncomplete();
 }

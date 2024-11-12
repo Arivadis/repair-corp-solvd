@@ -28,7 +28,11 @@ public class Employee extends Person {
     }
 
     public void hire() {
-        this.hired = !this.hired;
+        this.hired = true;
+    }
+
+    public void fire() {
+        this.hired = false;
     }
 
     public boolean getHired() {
@@ -51,6 +55,7 @@ public class Employee extends Person {
         TEAMLEAD
     }
 
+    @Override
     public void notifyPerson(String remark) {
         System.out.println("Send message to employee in telegram Sol group or call by ->" + phoneNumber + "with " + remark);
     }

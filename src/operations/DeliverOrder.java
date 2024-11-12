@@ -67,16 +67,28 @@ public class DeliverOrder extends Order {
         this.deliveredTime = deliveredTime;
     }
 
+    @Override
     public void setComplete() {
-        complete = !complete;
         if (complete) {
-            deliveryMan.setStatusReady(true);
-            deliveredTime = LocalDateTime.now();
-        } else {
-            deliveryMan.setStatusReady(false);
-            deliveredTime = null;
+            System.out.println("The delivery order was already complete!" + id);
+            return;
         }
-        System.out.println(complete ? "The delivery order is complete now -> " + id : "Something went wrong -> the delivery order is uncompleted now -> " + id);
+        complete = true;
+        deliveryMan.setStatusReady(true);
+        deliveredTime = LocalDateTime.now();
+        System.out.println("The delivery order is complete now -> " + id);
+    }
+
+    @Override
+    public void setIncomplete() {
+        if (!complete) {
+            System.out.println("The delivery order was already incomplete!" + id);
+            return;
+        }
+        complete = false;
+        deliveryMan.setStatusReady(false);
+        deliveredTime = null;
+        System.out.println("The delivery order is incomplete now -> " + id);
     }
 
     @Override

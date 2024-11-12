@@ -32,6 +32,7 @@ public class Customer extends Person {
         this.discount = discount;
     }
 
+    @Override
     public void notifyPerson(String remark) {
         if (phoneNumber == null || phoneNumber.isEmpty()) {
             System.out.println("\nCan't call as customer did not give a number with\n");
