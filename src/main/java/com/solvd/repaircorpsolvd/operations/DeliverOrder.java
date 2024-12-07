@@ -1,6 +1,5 @@
 package com.solvd.repaircorpsolvd.operations;
 
-import com.solvd.repaircorpsolvd.staff.Customer;
 import com.solvd.repaircorpsolvd.staff.Employee;
 import com.solvd.repaircorpsolvd.support.Address;
 import com.solvd.repaircorpsolvd.support.AddressNotFoundException;
@@ -34,16 +33,6 @@ public class DeliverOrder extends Order {
 
     public void setWeight(Double weight) {
         this.weight = weight;
-    }
-
-    @Override
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    @Override
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 
     public Address getAddress() {

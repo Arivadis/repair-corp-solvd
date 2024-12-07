@@ -26,17 +26,17 @@ public abstract class Order {
         return createTime;
     }
 
-    protected Customer getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    protected void setCustomer(Customer customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
-    protected abstract void setComplete();
+    public abstract void setComplete();
 
-    protected abstract void setIncomplete();
+    public abstract void setIncomplete();
 
     @Override
     public int hashCode() {
