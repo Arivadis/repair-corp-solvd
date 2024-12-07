@@ -1,5 +1,8 @@
 package com.solvd.repaircorpsolvd.custom_linked_list;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 
 public class CustomLinkedList<N> implements List<N> {
@@ -7,6 +10,7 @@ public class CustomLinkedList<N> implements List<N> {
     private Node<N> head;
     private Node<N> tail;
     private int size;
+    private static final Logger logger = LoggerFactory.getLogger(CustomLinkedList.class);
 
     public CustomLinkedList(N initNode) {
         this.head = new Node<>(initNode);
@@ -116,7 +120,7 @@ public class CustomLinkedList<N> implements List<N> {
     @Override
     public boolean add(N n) {
         if (n == null) {
-            System.out.println("Object cannot be null");
+            logger.warn("Object cannot be null");
             return false;
         }
 

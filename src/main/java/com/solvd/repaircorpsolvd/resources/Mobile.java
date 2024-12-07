@@ -1,5 +1,8 @@
 package com.solvd.repaircorpsolvd.resources;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Objects;
 
 public class Mobile extends Device implements Chargeable, Networkable {
@@ -8,6 +11,7 @@ public class Mobile extends Device implements Chargeable, Networkable {
     private NetworkType networkType;
     private boolean charging;
     private boolean isConnected;
+    private static final Logger logger = LoggerFactory.getLogger(Mobile.class);
 
     public Mobile(String made, String model) {
         super(made, model);
@@ -53,13 +57,13 @@ public class Mobile extends Device implements Chargeable, Networkable {
     @Override
     public void charge() {
         charging = true;
-        System.out.println(getMade() + " " + getModel() + " is charging now");
+        logger.info("{} {} is charging now", getMade(), getModel());
     }
 
     @Override
     public void stopCharge() {
         charging = false;
-        System.out.println(getMade() + " " + getModel() + " is not charging now");
+        logger.info("{} {} is not charging now", getMade(), getModel());
     }
 
     @Override
@@ -70,13 +74,13 @@ public class Mobile extends Device implements Chargeable, Networkable {
     @Override
     public void connectNetwork() {
         isConnected = true;
-        System.out.println(getMade() + " " + getModel() + " is connected now");
+        logger.info("{} {} is connected now", getMade(), getModel());
     }
 
     @Override
     public void disconnectNetwork() {
         isConnected = false;
-        System.out.println(getMade() + " " + getModel() + " is not connected now");
+        logger.info("{} {} is not connected now", getMade(), getModel());
     }
 
     @Override

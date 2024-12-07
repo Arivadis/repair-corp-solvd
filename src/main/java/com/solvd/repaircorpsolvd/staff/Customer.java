@@ -2,6 +2,8 @@ package com.solvd.repaircorpsolvd.staff;
 
 import com.solvd.repaircorpsolvd.resources.Device;
 import com.solvd.repaircorpsolvd.support.IdGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
@@ -10,13 +12,10 @@ public final class Customer extends Person {
 
     private Device device;
     private double discount;
+    private static final Logger logger = LoggerFactory.getLogger(Customer.class);
 
     public Customer(String name, String surname, int age) {
         super(name, surname, age, IdGenerator.createId());
-    }
-
-    public long getId() {
-        return id;
     }
 
     public Device getDevice() {
@@ -38,28 +37,28 @@ public final class Customer extends Person {
     @Override
     public void notifyPerson(String remark) {
         if (phoneNumber == null || phoneNumber.isEmpty()) {
-            System.out.println("\nCan't call as customer did not give a number with\n");
+            logger.warn("\nCan't call as customer did not give a number with\n");
         } else {
-            System.out.println("\nMake a call to customer -> " + phoneNumber + " with info " + remark + "\n");
+            logger.info("\nMake a call to customer -> {}  with info {} \n", phoneNumber, remark);
             return;
         }
         if (email == null || email.isEmpty()) {
-            System.out.println("\nCan't send e-mail as customer did not give an address\n");
+            logger.warn("\nCan't send e-mail as customer did not give an address\n");
         } else {
-            System.out.println("\nSend e-mail to customer -> " + email + " with info " + remark + "\n");
+            logger.info("\nSend e-mail to customer -> {} with info {} \n", email, remark);
             return;
         }
         if (address == null || address.isEmpty()) {
-            System.out.println("\nThere is no any customer's contacts, did you forget to ask for it???\n");
+            logger.warn("\nThere is no any customer's contacts, did you forget to ask for it???\n");
         } else {
-            System.out.println("\nSend a list to customer using address -> " + address + " with info " + remark + "\n");
+            logger.info("\nSend a list to customer using address -> {}  with info {} \n", address, remark);
         }
     }
 
     @Override
     public String toString() {
         String output = "\nCustomer info\nID " + id + "\n" + getBaseInfo() + "\nDiscount " + discount + "\n";
-        System.out.println(output);
+        logger.info(output);
         return output;
     }
 

@@ -6,6 +6,8 @@ import com.solvd.repaircorpsolvd.support.Address;
 import com.solvd.repaircorpsolvd.support.AddressNotFoundException;
 import com.solvd.repaircorpsolvd.support.Addresses;
 import com.solvd.repaircorpsolvd.support.IdGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,6 +22,7 @@ public class DeliverOrder extends Order {
     private Employee deliveryMan;
     private LocalDateTime deliveredTime;
     private BigDecimal cost;
+    private static final Logger logger = LoggerFactory.getLogger(DeliverOrder.class);
 
     public DeliverOrder() {
         super(IdGenerator.createId());
@@ -33,10 +36,12 @@ public class DeliverOrder extends Order {
         this.weight = weight;
     }
 
+    @Override
     public Customer getCustomer() {
         return customer;
     }
 
+    @Override
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
@@ -50,7 +55,7 @@ public class DeliverOrder extends Order {
             Addresses.addressExists(address);
             this.address = address;
         } catch (AddressNotFoundException e) {
-            System.out.println(e.getMessage());
+            logger.warn(e.getMessage());
         }
     }
 
@@ -89,31 +94,31 @@ public class DeliverOrder extends Order {
     @Override
     public void setComplete() {
         if (complete) {
-            System.out.println("The delivery order was already complete!" + ID);
+            logger.info("The delivery order was already complete! {}", ID);
             return;
         }
         complete = true;
         deliveryMan.setStatusReady(true);
         deliveredTime = LocalDateTime.now();
-        System.out.println("The delivery order is complete now -> " + ID);
+        logger.info("The delivery order is complete now -> {}", ID);
     }
 
     @Override
     public void setIncomplete() {
         if (!complete) {
-            System.out.println("The delivery order was already incomplete!" + ID);
+            logger.info("The delivery order was already incomplete!{}", ID);
             return;
         }
         complete = false;
         deliveryMan.setStatusReady(false);
         deliveredTime = null;
-        System.out.println("The delivery order is incomplete now -> " + ID);
+        logger.info("The delivery order is incomplete now -> {}", ID);
     }
 
     @Override
     public String toString() {
         String output = "Delivery order info\nID " + ID + "\nWeight " + weight + "\n Address " + address + "\nDelivery day " + deliveryDay;
-        System.out.println(output);
+        logger.info(output);
         return output;
     }
 

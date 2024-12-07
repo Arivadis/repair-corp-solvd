@@ -1,8 +1,9 @@
 package com.solvd.repaircorpsolvd.operations;
 
 import com.solvd.repaircorpsolvd.resources.Device;
-import com.solvd.repaircorpsolvd.staff.Customer;
 import com.solvd.repaircorpsolvd.support.IdGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ public class RepairOrder extends Order {
     private BigDecimal estimateCost;
     private DeliverOrder deliverOrder;
     private final Set<PartsOrder> partsOrders;
+    private static final Logger logger = LoggerFactory.getLogger(RepairOrder.class);
 
     public RepairOrder() {
         super(IdGenerator.createId());
@@ -37,14 +39,6 @@ public class RepairOrder extends Order {
 
     public void setRepairedTime(LocalDateTime repairedTime) {
         this.repairedTime = repairedTime;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 
     public List<Device> getDevices() {
@@ -98,34 +92,34 @@ public class RepairOrder extends Order {
     @Override
     public void setComplete() {
         if (complete) {
-            System.out.println("The repair order was already complete!" + ID);
+            logger.info("The repair order was already complete!{}", ID);
             return;
         }
         complete = true;
         repairedTime = LocalDateTime.now();
-        System.out.println("The repair order is complete now " + ID);
+        logger.info("The repair order is complete now {}", ID);
     }
 
     @Override
     public void setIncomplete() {
         if (!complete) {
-            System.out.println("The repair order was already incomplete!" + ID);
+            logger.info("The repair order was already incomplete!{}", ID);
             return;
         }
         complete = false;
         repairedTime = null;
-        System.out.println("The repair order is incomplete now " + ID);
+        logger.info("The repair order is incomplete now {}", ID);
     }
 
     @Override
     public String toString() {
         String output = "Repair order info\nID " + ID + "\nTime " + TIME + "\n Customer " + customer.toString() + "\nEstimate Cost " + estimateCost.toString();
-        System.out.println(output);
+        logger.info(output);
         return output;
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return Objects.hash(ID, createTime, TIME, repairedTime);
     }
 

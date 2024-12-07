@@ -1,5 +1,8 @@
 package com.solvd.repaircorpsolvd.staff;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -7,6 +10,7 @@ public final class TeamLead extends Employee implements BonusSettable {
 
     private String department;
     private int maxSubordinates;
+    private static final Logger logger = LoggerFactory.getLogger(TeamLead.class);
 
     public TeamLead(String name, String surname, int age, JobPosition position, String phoneNumber, String department) {
         super(name, surname, age, position, phoneNumber);
@@ -32,19 +36,19 @@ public final class TeamLead extends Employee implements BonusSettable {
     @Override
     public void setBonus(Employee employee, BigDecimal bonus) {
         if (employee == null) {
-            System.out.println("TeamLead -> Employee cannot be null");
+            logger.info("TeamLead -> Employee cannot be null");
             return;
         }
         if (employee instanceof RepairTechnician repairTechnician) {
             if (repairTechnician.getDepartment().equals(department)) {
                 if (bonus.compareTo(new BigDecimal(500)) > 0) {
-                    System.out.println("TeamLead -> Bonus can not be more than 500");
+                    logger.warn("TeamLead -> Bonus can not be more than 500");
                     return;
                 }
-                System.out.println("TeamLead set bonus to " + employee + " BONUS " + bonus);
+                logger.info("TeamLead set bonus to {} BONUS {}", employee, bonus);
                 employee.setBonus(bonus);
             } else {
-                System.out.println("TeamLead -> The department does not match or employee is not RepairTechnician");
+                logger.warn("TeamLead -> The department does not match or employee is not RepairTechnician");
             }
         }
     }

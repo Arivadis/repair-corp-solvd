@@ -4,6 +4,8 @@ import com.solvd.repaircorpsolvd.support.Address;
 import com.solvd.repaircorpsolvd.support.AddressNotFoundException;
 import com.solvd.repaircorpsolvd.support.Addresses;
 import com.solvd.repaircorpsolvd.support.NegativeValueException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 
@@ -13,6 +15,7 @@ public abstract class Building implements Rentable {
     protected double area;
     protected BigDecimal rentCost;
     protected boolean rentalStatus;
+    private static final Logger logger = LoggerFactory.getLogger(Building.class);
 
     protected Building() {
     }
@@ -40,9 +43,9 @@ public abstract class Building implements Rentable {
             Addresses.addressExists(address);
             this.address = address;
         } catch (AddressNotFoundException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         } finally {
-            System.out.println("The current address is " + this.address);
+            logger.error("The current address is {}", this.address);
         }
 
     }
@@ -75,13 +78,13 @@ public abstract class Building implements Rentable {
     public void rent(BigDecimal cost) {
         this.rentCost = cost;
         this.rentalStatus = true;
-        System.out.println("Building is now rented for " + cost);
+        logger.info("Building is now rented for {}", cost);
     }
 
     @Override
     public void vacate() {
         this.rentalStatus = false;
         this.rentCost = BigDecimal.ZERO;
-        System.out.println("Building at is now vacated.");
+        logger.info("Building at is now vacated.");
     }
 }

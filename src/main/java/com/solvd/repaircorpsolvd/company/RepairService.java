@@ -11,6 +11,8 @@ import com.solvd.repaircorpsolvd.staff.JobPosition;
 import com.solvd.repaircorpsolvd.support.Address;
 import com.solvd.repaircorpsolvd.support.AddressNotFoundException;
 import com.solvd.repaircorpsolvd.support.NegativeValueException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class RepairService extends Building {
     private ExecutiveDirector executiveDirector;
     private final List<RepairOrder> orders;
     private int totalRepaired;
+    private static final Logger logger = LoggerFactory.getLogger(RepairService.class);
 
     public RepairService() {
         employees = new ArrayList<>();
@@ -107,7 +110,7 @@ public class RepairService extends Building {
                 if (employee.getHired() && employee.getPosition() == JobPosition.DELIVERY && employee.statusReady()) {
                     deliveryMan = employee;
                     deliveryMan.setStatusReady(false);
-                    System.out.println("Delivery man has been set " + deliveryMan.getName() + " " + deliveryMan.getSurname() + "\n");
+                    logger.info("Delivery man has been set {} {} \n", deliveryMan.getName(), deliveryMan.getSurname());
                     break;
                 }
             }
@@ -118,27 +121,27 @@ public class RepairService extends Building {
                 deliverOrder.setComplete();
                 deliveryMan.setStatusReady(true);
             } else {
-                System.out.println("Something went wrong, check an order to find issues\n");
+                logger.warn("Something went wrong, check an order to find issues\n");
             }
 
         } else if (order instanceof RepairOrder repairOrder) {
-            System.out.println("Order date/time " + repairOrder.getTIME() + "\n");
+            logger.info("Order date/time {} \n", repairOrder.getTIME());
             if (repairOrder.getDevices() != null) {
-                System.out.println("Devices to repair ");
+                logger.info("Devices to repair ");
                 for (Device device : repairOrder.getDevices()) {
-                    System.out.println(device);
+                    logger.info("{}", device);
                 }
             }
             if (repairOrder.getPartsOrders() != null) {
-                System.out.println("Check the parts to order ");
+                logger.info("Check the parts to order ");
             } else {
-                System.out.println("Repairing with no orders ");
+                logger.info("Repairing with no orders ");
             }
             if (repairOrder.getEstimateCost() != null) {
-                System.out.println("Charge client for " + repairOrder.getEstimateCost() + "\n");
+                logger.info("Charge client for {} \n", repairOrder.getEstimateCost());
             }
         } else if (order instanceof PartsOrder partsOrder) {
-            System.out.println(partsOrder);
+            logger.info("{}", partsOrder);
         }
     }
 

@@ -1,5 +1,8 @@
 package com.solvd.repaircorpsolvd.resources;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Objects;
 
 public class Laptop extends Device implements Chargeable {
@@ -8,6 +11,7 @@ public class Laptop extends Device implements Chargeable {
     private double batteryHours;
     private boolean camera;
     private boolean charging;
+    private static final Logger logger = LoggerFactory.getLogger(Laptop.class);
 
     public Laptop(String made, String model) {
         super(made, model);
@@ -62,13 +66,13 @@ public class Laptop extends Device implements Chargeable {
     @Override
     public void charge() {
         charging = true;
-        System.out.println(getMade() + " " + getModel() + " is charging now");
+        logger.info("{} {} is charging now", getMade(), getModel());
     }
 
     @Override
     public void stopCharge() {
         charging = false;
-        System.out.println(getMade() + " " + getModel() + " is not charging now");
+        logger.info("{} {} is not charging now", getMade(), getModel());
     }
 
     @Override

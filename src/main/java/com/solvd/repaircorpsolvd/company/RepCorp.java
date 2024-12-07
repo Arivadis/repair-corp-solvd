@@ -4,6 +4,8 @@ import com.solvd.repaircorpsolvd.staff.Employee;
 import com.solvd.repaircorpsolvd.support.Address;
 import com.solvd.repaircorpsolvd.support.AddressNotFoundException;
 import com.solvd.repaircorpsolvd.support.NegativeValueException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ public class RepCorp extends Building {
     private String name;
     private BigDecimal initCapital;
     private final List<RepairService> services;
+    private static final Logger logger = LoggerFactory.getLogger(RepCorp.class);
 
     public RepCorp(String corpName, BigDecimal initCapital, Address address, double area, BigDecimal rentCost) throws AddressNotFoundException, NegativeValueException {
         super(address, area, rentCost);
@@ -72,11 +75,11 @@ public class RepCorp extends Building {
 
     public void processRent(Rentable rentable, BigDecimal cost) {
         rentable.rent(cost);
-        System.out.println("Just rented new building with cost " + cost);
+        logger.info("Just rented new building with cost {}", cost);
     }
 
     public void stopRent(Rentable rentable) {
         rentable.vacate();
-        System.out.println("Just vacated building");
+        logger.info("Just vacated building");
     }
 }

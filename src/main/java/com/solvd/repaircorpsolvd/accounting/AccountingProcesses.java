@@ -4,6 +4,8 @@ import com.solvd.repaircorpsolvd.support.CalculationRuntimeException;
 import com.solvd.repaircorpsolvd.support.EmptyFileException;
 import com.solvd.repaircorpsolvd.support.InvalidFormatException;
 import com.solvd.repaircorpsolvd.support.TxtFileDataImporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -13,6 +15,7 @@ import java.util.Arrays;
 public class AccountingProcesses {
 
     private static final TxtFileDataImporter validator = TxtFileDataImporter.getInstance();
+    private static final Logger logger = LoggerFactory.getLogger(AccountingProcesses.class);
 
     private AccountingProcesses() {
     }
@@ -25,7 +28,7 @@ public class AccountingProcesses {
         try {
             formattedInvoice = validator.fileProcess(invoice);
         } catch (IOException | InvalidFormatException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
             throw new IllegalArgumentException("Illegal argument as file");
         }
         BigDecimal finalCount = BigDecimal.ZERO;
@@ -37,10 +40,10 @@ public class AccountingProcesses {
                 }
                 finalCount = finalCount.add(new BigDecimal(now));
             }
-
         } catch (Exception e) {
             throw new CalculationRuntimeException("Could not finish process due to calculation error " + e);
         }
+        logger.info("Sum of invoice {}", finalCount);
 
         return finalCount;
     }

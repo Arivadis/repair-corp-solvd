@@ -11,17 +11,19 @@ import com.solvd.repaircorpsolvd.operations.RepairType;
 import com.solvd.repaircorpsolvd.resources.*;
 import com.solvd.repaircorpsolvd.staff.*;
 import com.solvd.repaircorpsolvd.support.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class Main {
 
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) {
+
         //possible addresses
         Address repairServiceAddress = new Address("Zakopane", "01-900", "Krut", "99");
         Address deliverOrderAddress = new Address("Warsaw", "05-090", "Krakowska", "3");
@@ -32,33 +34,22 @@ public class Main {
         // Addresses.addressExists(checkAddress); throws unknow address
         RepairService repairService = null;
         try {
-            repairService = new RepairService(
-                    "Whoop and done",
-                    "Mobile",
-                    repairServiceAddress,
-                    400.,
-                    new BigDecimal("8000")
-            );
+            repairService = new RepairService
+                    ("Whoop and done", "Mobile", repairServiceAddress, 400., new BigDecimal("8000"));
         } catch (AddressNotFoundException | NegativeValueException e) {
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
         }
 
         // test wrong address
         RepairService repairService1 = null;
         try {
-            repairService1 = new RepairService(
-                    "Whoop and done",
-                    "Mobile",
-                    checkAddress,
-                    400.,
-                    new BigDecimal("8000")
-            );
+            repairService1 = new RepairService("Whoop and done", "Mobile", checkAddress, 400., new BigDecimal("8000"));
         } catch (AddressNotFoundException | NegativeValueException e) {
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
         }
         // will fail due to the not init instance
-        // System.out.println(repairService1.getProfile());
-        System.out.println(repairService1);
+        // logger.info("{}", repairService1.getProfile());
+        logger.info("{}", repairService1);
 
 
         TeamLead teamLead = new TeamLead("Ali", "Baba", 18, JobPosition.TEAMLEAD, "+482322235", "Mobile");
@@ -79,7 +70,7 @@ public class Main {
         repairService.setTeamLead(teamLead);
         repairService.getTeamLead().notifyPerson("Do something");
 
-        System.out.println(dekiveryMan);
+        logger.info("{}", dekiveryMan);
 
         Mobile device1 = new Mobile("Motorola", "G54");
         Mobile device2 = new Mobile("Samsung", "L10");
@@ -95,7 +86,7 @@ public class Main {
         Customer customer1 = new Customer("Abu", "Bandit", 18);
         customer1.setDevice(device1);
         customer1.setEmail("olo@gmail.com");
-        System.out.println(customer1);
+        logger.info("{}", customer1);
 
         RepairOrder repairOrder1 = new RepairOrder();
         repairOrder1.setCustomer(customer1);
@@ -139,15 +130,9 @@ public class Main {
 
         RepCorp corporation = null;
         try {
-            corporation = new RepCorp(
-                    "Fixed Enterprise",
-                    new BigDecimal("1000000000"),
-                    repairServiceAddress,
-                    255.,
-                    new BigDecimal("9000")
-            );
+            corporation = new RepCorp("Fixed Enterprise", new BigDecimal("1000000000"), repairServiceAddress, 255., new BigDecimal("9000"));
         } catch (AddressNotFoundException | NegativeValueException e) {
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
         }
 
 
@@ -155,12 +140,12 @@ public class Main {
         corporation.addService(repairService);
         corporation.addService(repairService2);
         corporation.closeService(repairService2);
-        System.out.println("Total repaired " + corporation.getTotalRepaired());
+        logger.info("Total repaired {}", corporation.getTotalRepaired());
 
         // compare devices
 
-        System.out.println(device2.equals(device2));
-        System.out.println(device2.equals(device1));
+        logger.info("{}", device2.equals(device2));
+        logger.info("{}", device2.equals(device1));
         Mobile device1Clone = new Mobile("Motorola", "G54");
         device1Clone.setNetworkType(NetworkType.FIVE_G);
 
@@ -168,10 +153,10 @@ public class Main {
         repairService.processOrder(deliverOrder);
 
         teamLead.setBonus(repairTechnician, new BigDecimal("501"));
-        System.out.println(repairTechnician.getBonus());
+        logger.info("{}", repairTechnician.getBonus());
         // cant do it
         teamLead.setBonus(repairTechnician, new BigDecimal("500"));
-        System.out.println(repairTechnician.getBonus());
+        logger.info("{}", repairTechnician.getBonus());
 
         accountant.setBonus(teamLead, new BigDecimal("1000"));
         accountant.setBonus(accountant, new BigDecimal("100"));
@@ -182,86 +167,94 @@ public class Main {
 
         corporation.processRent(repairService, new BigDecimal("5012"));
         corporation.stopRent(repairService2);
-        System.out.println(device1.onCharging());
+        logger.info("{}", device1.onCharging());
         device4.charge();
-        System.out.println(device4.onCharging());
+        logger.info("{}", device4.onCharging());
 
         try {
             // Normal data
-            System.out.println("The sum of invoice -> " + AccountingProcesses.sumOfInvoice("src/main/resources/invoice.txt"));
+            logger.info("The sum of invoice -> {}", AccountingProcesses.sumOfInvoice("src/main/resources/invoice.txt"));
             // Illegal format
-//            System.out.println("The sum of invoice -> " + AccountingProcesses.sumOfInvoice("src/main/resources/test format.txtt"));
+//            logger.info("The sum of invoice -> {}", AccountingProcesses.sumOfInvoice("src/main/resources/test format.txtt"));
             // wrong data
-//            System.out.println("The sum of invoice -> " + AccountingProcesses.sumOfInvoice("src/main/resources/wrongData.txt"));
+//            logger.info("The sum of invoice -> {}", AccountingProcesses.sumOfInvoice("src/main/resources/wrongData.txt"));
         } catch (EmptyFileException e) {
-            System.out.println(e.getMessage());
-        } catch (CalculationRuntimeException e) {
-            System.out.println("Not handled problem \nCould not finish the counting -> " + e);
+            logger.info(e.getMessage());
+        } catch (CalculationRuntimeException except) {
+            logger.info("Not handled problem \n" + "Could not finish the counting -> {}", except);
         }
 
         CustomLinkedList<String> linkedList = new CustomLinkedList<>();
         linkedList.add("1");
         linkedList.add("2");
         for (String val : linkedList) {
-            System.out.println(val);
+            logger.info(val);
         }
-        System.out.println(Arrays.toString(linkedList.toArray()));
+        logger.info("{}", Arrays.toString(linkedList.toArray()));
 
         linkedList.remove("1");
-        System.out.println(linkedList.getHead().getValue());
-        System.out.println(linkedList.getTail().getValue());
-        System.out.println(linkedList.getSize());
-        System.out.println(linkedList.isEmpty() + " 1");
+        logger.info("{}", linkedList.getHead().getValue());
+        logger.info("{}", linkedList.getTail().getValue());
+        logger.info("{}", linkedList.getSize());
+        logger.info("{}", linkedList.isEmpty() + " 1");
         linkedList.remove("1");
-        System.out.println(linkedList.getSize() + " 2");
-        System.out.println(linkedList.isEmpty());
+        logger.info("{}", linkedList.getSize() + " 2");
+        logger.info("{}", linkedList.isEmpty());
         linkedList.remove("2");
-        System.out.println(linkedList.getSize() + " 3");
-        System.out.println(linkedList.isEmpty());
+        logger.info("{}", linkedList.getSize() + " 3");
+        logger.info("{}", linkedList.isEmpty());
         linkedList.add("1");
         linkedList.add("2");
         linkedList.add("3");
-        System.out.println(linkedList.getSize());
+        logger.info("{}", linkedList.getSize());
         linkedList.addAll(new ArrayList<>(Arrays.asList("4", "5", "6")));
-        System.out.println(linkedList.toString());
-        System.out.println(linkedList.getSize());
+        logger.info("{}", linkedList.toString());
+        logger.info("{}", linkedList.getSize());
         linkedList.addAll(linkedList.size(), new ArrayList<>(Arrays.asList("1", "1", "1")));
-        System.out.println(linkedList.getSize());
+        logger.info("{}", linkedList.getSize());
         linkedList.add(5, "10");
-        System.out.println(linkedList.toString());
-        System.out.println(linkedList.getSize());
+        logger.info("{}", linkedList.toString());
+        logger.info("{}", linkedList.getSize());
         linkedList.add(0, "10");
-        System.out.println(linkedList.toString());
-        System.out.println(linkedList.getSize());
+        logger.info("{}", linkedList.toString());
+        logger.info("{}", linkedList.getSize());
         linkedList.add(linkedList.size(), "10");
 
-        System.out.println(linkedList.toString());
-        System.out.println(linkedList.getSize());
+        logger.info("{}", linkedList.toString());
+        logger.info("{}", linkedList.getSize());
         linkedList.remove(11);
-        System.out.println(linkedList.lastIndexOf("10"));
-        System.out.println(linkedList.toString());
-        System.out.println(linkedList.subList(1, 3));
+        logger.info("{}", linkedList.lastIndexOf("10"));
+        logger.info("{}", linkedList.toString());
+        logger.info("{}", linkedList.subList(1, 3));
 
         ListIterator<String> iterator = linkedList.listIterator();
 
         // Test hasNext and next
-        System.out.println("Iterating forward:");
+        logger.info("Iterating forward:");
         while (iterator.hasNext()) {
-            System.out.println("Next: " + iterator.next());
+            logger.info("Next: {}", iterator.next());
         }
-        System.out.println("\nIterating backward:");
+        logger.info("\nIterating backward:");
         while (iterator.hasPrevious()) {
-            System.out.println("Previous: " + iterator.previous());
+            logger.info("Previous: {}", iterator.previous());
         }
         iterator.add("Five");
         iterator.set("Six");
         while (iterator.hasNext()) {
-            System.out.println("Next: " + iterator.next());
+            logger.info("Next: {}", iterator.next());
         }
 
         while (iterator.hasPrevious()) {
-            System.out.println("Previous: " + iterator.previous());
+            logger.info("Previous: {}", iterator.previous());
+        }
+        Map<String, Integer> retTxt = UniqCounter.uniqWordsTxt("src/main/resources/Financier_1109.txt");
+        for (Map.Entry<String, Integer> entry : retTxt.entrySet()) {
+            logger.info("{}: {}", entry.getKey(), entry.getValue());
         }
 
+        Map<String, Integer> retPdf = UniqCounter.uniqWordsPdf("src/main/resources/Financier_1109.pdf");
+        for (Map.Entry<String, Integer> entry : retPdf.entrySet()) {
+            logger.info("{}: {}", entry.getKey(), entry.getValue());
+        }
     }
 }

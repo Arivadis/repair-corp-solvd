@@ -1,6 +1,8 @@
 package com.solvd.repaircorpsolvd.staff;
 
 import com.solvd.repaircorpsolvd.support.IdGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -12,6 +14,7 @@ public class Employee extends Person {
     private boolean statusReady;
     private BigDecimal salary;
     private BigDecimal bonus;
+    private static final Logger logger = LoggerFactory.getLogger(Employee.class);
 
     public Employee(String name, String surname, int age, JobPosition position, String phoneNumber) {
         super(name, surname, age, IdGenerator.createId());
@@ -68,7 +71,7 @@ public class Employee extends Person {
 
     @Override
     public void notifyPerson(String remark) {
-        System.out.println("Send message to employee in telegram Sol group or call by ->" + phoneNumber + "with " + remark);
+        logger.info("Send message to employee in telegram Sol group or call by -> {} with {}", phoneNumber, remark);
     }
 
     @Override

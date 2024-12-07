@@ -4,6 +4,8 @@ import com.solvd.repaircorpsolvd.support.Address;
 import com.solvd.repaircorpsolvd.support.AddressNotFoundException;
 import com.solvd.repaircorpsolvd.support.Addresses;
 import com.solvd.repaircorpsolvd.support.IdGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -17,14 +19,11 @@ public class PartsOrder extends Order {
     private BigDecimal cost;
     private final Map<String, Integer> parts;
     private boolean paid;
+    private static final Logger logger = LoggerFactory.getLogger(PartsOrder.class);
 
     public PartsOrder() {
         super(IdGenerator.createId());
         parts = new HashMap<>();
-    }
-
-    public long getId() {
-        return ID;
     }
 
     public String getWarehouse() {
@@ -60,7 +59,7 @@ public class PartsOrder extends Order {
             Addresses.addressExists(address);
             this.address = address;
         } catch (AddressNotFoundException e) {
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
         }
     }
 
@@ -79,21 +78,21 @@ public class PartsOrder extends Order {
     @Override
     public void setComplete() {
         if (complete) {
-            System.out.println("The parts order was already complete!" + ID);
+            logger.info("The parts order was already complete!{}", ID);
             return;
         }
         complete = true;
-        System.out.println("The parts order is complete now " + ID);
+        logger.info("The parts order is complete now {}", ID);
     }
 
     @Override
     public void setIncomplete() {
         if (!complete) {
-            System.out.println("The parts order was already incomplete!" + ID);
+            logger.info("The parts order was already incomplete!{}", ID);
             return;
         }
         complete = false;
-        System.out.println("The parts order is incomplete now " + ID);
+        logger.info("The parts order is incomplete now {}", ID);
     }
 
     @Override

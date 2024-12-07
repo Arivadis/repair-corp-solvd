@@ -1,5 +1,8 @@
 package com.solvd.repaircorpsolvd.support;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +14,7 @@ import java.util.Arrays;
 public class TxtFileDataImporter implements AutoCloseable {
 
     private static TxtFileDataImporter instance;
+    private static final Logger logger = LoggerFactory.getLogger(TxtFileDataImporter.class);
 
     private TxtFileDataImporter() {
     }
@@ -55,7 +59,7 @@ public class TxtFileDataImporter implements AutoCloseable {
             }
             // skip catching runtime exception to give CalculationRuntimeException do it
         } finally {
-            System.out.println("The invoice consists of -> " + lines);
+            logger.info("The invoice consists of -> {}", lines);
         }
         return lines.toString();
     }

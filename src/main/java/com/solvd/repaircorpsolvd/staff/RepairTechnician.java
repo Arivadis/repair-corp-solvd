@@ -1,11 +1,15 @@
 package com.solvd.repaircorpsolvd.staff;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Objects;
 
 public final class RepairTechnician extends Employee {
 
     private String department;
     private Specification specification;
+    private static final Logger logger = LoggerFactory.getLogger(RepairTechnician.class);
 
     public RepairTechnician(String name, String surname, int age, JobPosition position, String phoneNumber, String department) {
         super(name, surname, age, position, phoneNumber);
@@ -31,7 +35,7 @@ public final class RepairTechnician extends Employee {
     @Override
     public String toString() {
         String output = "\nRepairTechnician info\nID " + id + "\n" + getBaseInfo() + "\nSpecification " + specification + "\nDepartment " + department;
-        System.out.println(output);
+        logger.info(output);
         return output;
     }
 
