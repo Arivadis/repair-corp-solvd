@@ -19,7 +19,7 @@ public class PartsOrder extends Order {
     private BigDecimal cost;
     private final Map<String, Integer> parts;
     private boolean paid;
-    private static final Logger logger = LoggerFactory.getLogger(PartsOrder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PartsOrder.class);
 
     public PartsOrder() {
         super(IdGenerator.createId());
@@ -59,7 +59,7 @@ public class PartsOrder extends Order {
             Addresses.addressExists(address);
             this.address = address;
         } catch (AddressNotFoundException e) {
-            logger.info(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
     }
 
@@ -78,21 +78,21 @@ public class PartsOrder extends Order {
     @Override
     public void setComplete() {
         if (complete) {
-            logger.info("The parts order was already complete!{}", ID);
+            LOGGER.info("The parts order was already complete!{}", ID);
             return;
         }
         complete = true;
-        logger.info("The parts order is complete now {}", ID);
+        LOGGER.info("The parts order is complete now {}", ID);
     }
 
     @Override
     public void setIncomplete() {
         if (!complete) {
-            logger.info("The parts order was already incomplete!{}", ID);
+            LOGGER.info("The parts order was already incomplete!{}", ID);
             return;
         }
         complete = false;
-        logger.info("The parts order is incomplete now {}", ID);
+        LOGGER.info("The parts order is incomplete now {}", ID);
     }
 
     @Override

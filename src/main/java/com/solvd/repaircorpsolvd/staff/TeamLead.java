@@ -10,7 +10,7 @@ public final class TeamLead extends Employee implements BonusSettable {
 
     private String department;
     private int maxSubordinates;
-    private static final Logger logger = LoggerFactory.getLogger(TeamLead.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TeamLead.class);
 
     public TeamLead(String name, String surname, int age, JobPosition position, String phoneNumber, String department) {
         super(name, surname, age, position, phoneNumber);
@@ -36,19 +36,19 @@ public final class TeamLead extends Employee implements BonusSettable {
     @Override
     public void setBonus(Employee employee, BigDecimal bonus) {
         if (employee == null) {
-            logger.info("TeamLead -> Employee cannot be null");
+            LOGGER.info("TeamLead -> Employee cannot be null");
             return;
         }
         if (employee instanceof RepairTechnician repairTechnician) {
             if (repairTechnician.getDepartment().equals(department)) {
                 if (bonus.compareTo(new BigDecimal(500)) > 0) {
-                    logger.warn("TeamLead -> Bonus can not be more than 500");
+                    LOGGER.warn("TeamLead -> Bonus can not be more than 500");
                     return;
                 }
-                logger.info("TeamLead set bonus to {} BONUS {}", employee, bonus);
+                LOGGER.info("TeamLead set bonus to {} BONUS {}", employee, bonus);
                 employee.setBonus(bonus);
             } else {
-                logger.warn("TeamLead -> The department does not match or employee is not RepairTechnician");
+                LOGGER.warn("TeamLead -> The department does not match or employee is not RepairTechnician");
             }
         }
     }

@@ -14,8 +14,8 @@ import java.util.Arrays;
 
 public class AccountingProcesses {
 
-    private static final TxtFileDataImporter validator = TxtFileDataImporter.getInstance();
-    private static final Logger logger = LoggerFactory.getLogger(AccountingProcesses.class);
+    private static final TxtFileDataImporter VALIDATOR = TxtFileDataImporter.getInstance();
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountingProcesses.class);
 
     private AccountingProcesses() {
     }
@@ -26,9 +26,9 @@ public class AccountingProcesses {
         }
         String formattedInvoice = "";
         try {
-            formattedInvoice = validator.fileProcess(invoice);
+            formattedInvoice = VALIDATOR.fileProcess(invoice);
         } catch (IOException | InvalidFormatException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             throw new IllegalArgumentException("Illegal argument as file");
         }
         BigDecimal finalCount = BigDecimal.ZERO;
@@ -43,7 +43,7 @@ public class AccountingProcesses {
         } catch (Exception e) {
             throw new CalculationRuntimeException("Could not finish process due to calculation error " + e);
         }
-        logger.info("Sum of invoice {}", finalCount);
+        LOGGER.info("Sum of invoice {}", finalCount);
 
         return finalCount;
     }

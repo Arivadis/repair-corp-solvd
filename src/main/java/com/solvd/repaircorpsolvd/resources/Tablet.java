@@ -13,10 +13,19 @@ public class Tablet extends Device implements Chargeable, Networkable {
     private NetworkType networkType;
     private boolean charging;
     private boolean isConnected;
-    private static final Logger logger = LoggerFactory.getLogger(Tablet.class);
+    private UsbType usbType;
+    private static final Logger LOGGER = LoggerFactory.getLogger(Tablet.class);
 
     public Tablet(String made, String model) {
         super(made, model);
+    }
+
+    public UsbType getUsbType() {
+        return usbType;
+    }
+
+    public void setUsbType(UsbType usbType) {
+        this.usbType = usbType;
     }
 
     public boolean getSimCard() {
@@ -75,13 +84,13 @@ public class Tablet extends Device implements Chargeable, Networkable {
     @Override
     public void charge() {
         charging = true;
-        logger.info("{} {} is charging now", getMade(), getModel());
+        LOGGER.info("{} {} is charging now", getMade(), getModel());
     }
 
     @Override
     public void stopCharge() {
         charging = false;
-        logger.info("{} {} is not charging now", getMade(), getModel());
+        LOGGER.info("{} {} is not charging now", getMade(), getModel());
     }
 
     @Override
@@ -92,13 +101,13 @@ public class Tablet extends Device implements Chargeable, Networkable {
     @Override
     public void connectNetwork() {
         isConnected = true;
-        logger.info("{} {} is connected now", getMade(), getModel());
+        LOGGER.info("{} {} is connected now", getMade(), getModel());
     }
 
     @Override
     public void disconnectNetwork() {
         isConnected = false;
-        logger.info("{} {} is not connected now", getMade(), getModel());
+        LOGGER.info("{} {} is not connected now", getMade(), getModel());
     }
 
     @Override

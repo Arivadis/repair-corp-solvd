@@ -16,7 +16,7 @@ public class RepCorp extends Building {
     private String name;
     private BigDecimal initCapital;
     private final List<RepairService> services;
-    private static final Logger logger = LoggerFactory.getLogger(RepCorp.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RepCorp.class);
 
     public RepCorp(String corpName, BigDecimal initCapital, Address address, double area, BigDecimal rentCost) throws AddressNotFoundException, NegativeValueException {
         super(address, area, rentCost);
@@ -75,11 +75,11 @@ public class RepCorp extends Building {
 
     public void processRent(Rentable rentable, BigDecimal cost) {
         rentable.rent(cost);
-        logger.info("Just rented new building with cost {}", cost);
+        LOGGER.info("Just rented new building with cost {}", cost);
     }
 
     public void stopRent(Rentable rentable) {
         rentable.vacate();
-        logger.info("Just vacated building");
+        LOGGER.info("Just vacated building");
     }
 }

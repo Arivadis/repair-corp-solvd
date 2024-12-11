@@ -10,7 +10,7 @@ public class CustomLinkedList<N> implements List<N> {
     private Node<N> head;
     private Node<N> tail;
     private int size;
-    private static final Logger logger = LoggerFactory.getLogger(CustomLinkedList.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomLinkedList.class);
 
     public CustomLinkedList(N initNode) {
         this.head = new Node<>(initNode);
@@ -120,7 +120,7 @@ public class CustomLinkedList<N> implements List<N> {
     @Override
     public boolean add(N n) {
         if (n == null) {
-            logger.warn("Object cannot be null");
+            LOGGER.warn("Object cannot be null");
             return false;
         }
 

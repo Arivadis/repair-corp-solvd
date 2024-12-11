@@ -14,14 +14,14 @@ public class Employee extends Person {
     private boolean statusReady;
     private BigDecimal salary;
     private BigDecimal bonus;
-    private static final Logger logger = LoggerFactory.getLogger(Employee.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Employee.class);
 
     public Employee(String name, String surname, int age, JobPosition position, String phoneNumber) {
         super(name, surname, age, IdGenerator.createId());
         this.phoneNumber = phoneNumber;
         this.position = position;
         this.hired = false;
-        this.salary = new BigDecimal("2500");
+        this.salary = position.getMinSalary();
         bonus = BigDecimal.ZERO;
     }
 
@@ -58,7 +58,15 @@ public class Employee extends Person {
     }
 
     public void setSalary(BigDecimal salary) {
-        this.salary = salary;
+        if (this.position.getMaxSalary().compareTo(salary) < 0) {
+            this.salary = this.position.getMaxSalary();
+            LOGGER.warn("Could not set more than {}", this.position.getMaxSalary());
+        } else if (this.position.getMinSalary().compareTo(salary) > 0) {
+            this.salary = this.position.getMinSalary();
+            LOGGER.warn("Could not set less than {}", this.position.getMinSalary());
+        } else {
+            this.salary = salary;
+        }
     }
 
     public BigDecimal getBonus() {
@@ -71,7 +79,7 @@ public class Employee extends Person {
 
     @Override
     public void notifyPerson(String remark) {
-        logger.info("Send message to employee in telegram Sol group or call by -> {} with {}", phoneNumber, remark);
+        LOGGER.info("Send message to employee in telegram Sol group or call by -> {} with {}", phoneNumber, remark);
     }
 
     @Override

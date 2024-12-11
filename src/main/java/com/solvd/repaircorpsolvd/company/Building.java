@@ -15,7 +15,7 @@ public abstract class Building implements Rentable {
     protected double area;
     protected BigDecimal rentCost;
     protected boolean rentalStatus;
-    private static final Logger logger = LoggerFactory.getLogger(Building.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Building.class);
 
     protected Building() {
     }
@@ -43,9 +43,9 @@ public abstract class Building implements Rentable {
             Addresses.addressExists(address);
             this.address = address;
         } catch (AddressNotFoundException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         } finally {
-            logger.error("The current address is {}", this.address);
+            LOGGER.error("The current address is {}", this.address);
         }
 
     }
@@ -78,13 +78,13 @@ public abstract class Building implements Rentable {
     public void rent(BigDecimal cost) {
         this.rentCost = cost;
         this.rentalStatus = true;
-        logger.info("Building is now rented for {}", cost);
+        LOGGER.info("Building is now rented for {}", cost);
     }
 
     @Override
     public void vacate() {
         this.rentalStatus = false;
         this.rentCost = BigDecimal.ZERO;
-        logger.info("Building at is now vacated.");
+        LOGGER.info("Building at is now vacated.");
     }
 }

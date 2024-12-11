@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class UniqCounter {
 
-    private static final Logger logger = LoggerFactory.getLogger(UniqCounter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UniqCounter.class);
 
     private UniqCounter() {
     }
@@ -39,7 +39,7 @@ public class UniqCounter {
             uniqDict.forEach((word, count) -> dictToString.append(word).append(": ").append(count).append("\n"));
             FileUtils.write(output, dictToString.toString(), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            logger.error("Got input error {}", e.getMessage());
+            LOGGER.error("Got input error {}", e.getMessage());
         }
         return uniqDict;
     }
@@ -60,7 +60,7 @@ public class UniqCounter {
             uniqDict.forEach((word, count) -> dictToString.append(word).append(": ").append(count).append("\n"));
             FileUtils.write(output, dictToString.toString(), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            logger.error("Got input error {}", e.getMessage());
+            LOGGER.error("Got input error {}", e.getMessage());
         }
         return uniqDict;
     }

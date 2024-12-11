@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class TxtFileDataImporter implements AutoCloseable {
 
     private static TxtFileDataImporter instance;
-    private static final Logger logger = LoggerFactory.getLogger(TxtFileDataImporter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TxtFileDataImporter.class);
 
     private TxtFileDataImporter() {
     }
@@ -59,13 +59,13 @@ public class TxtFileDataImporter implements AutoCloseable {
             }
             // skip catching runtime exception to give CalculationRuntimeException do it
         } finally {
-            logger.info("The invoice consists of -> {}", lines);
+            LOGGER.info("The invoice consists of -> {}", lines);
         }
         return lines.toString();
     }
 
-    private boolean stringValid(String string) {
-        return string.matches("[0-9\\.]+");
+    private boolean stringValid(String regex) {
+        return regex.matches("[0-9.]+");
     }
 
     private void fileTxtFormatValid(String filename) throws InvalidFormatException {

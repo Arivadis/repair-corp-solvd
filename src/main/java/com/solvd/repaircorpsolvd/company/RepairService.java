@@ -28,7 +28,7 @@ public class RepairService extends Building {
     private ExecutiveDirector executiveDirector;
     private final List<RepairOrder> orders;
     private int totalRepaired;
-    private static final Logger logger = LoggerFactory.getLogger(RepairService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RepairService.class);
 
     public RepairService() {
         employees = new ArrayList<>();
@@ -110,7 +110,7 @@ public class RepairService extends Building {
                 if (employee.getHired() && employee.getPosition() == JobPosition.DELIVERY && employee.statusReady()) {
                     deliveryMan = employee;
                     deliveryMan.setStatusReady(false);
-                    logger.info("Delivery man has been set {} {} \n", deliveryMan.getName(), deliveryMan.getSurname());
+                    LOGGER.info("Delivery man has been set {} {} \n", deliveryMan.getName(), deliveryMan.getSurname());
                     break;
                 }
             }
@@ -121,27 +121,27 @@ public class RepairService extends Building {
                 deliverOrder.setComplete();
                 deliveryMan.setStatusReady(true);
             } else {
-                logger.warn("Something went wrong, check an order to find issues\n");
+                LOGGER.warn("Something went wrong, check an order to find issues\n");
             }
 
         } else if (order instanceof RepairOrder repairOrder) {
-            logger.info("Order date/time {} \n", repairOrder.getTIME());
+            LOGGER.info("Order date/time {} \n", repairOrder.getTIME());
             if (repairOrder.getDevices() != null) {
-                logger.info("Devices to repair ");
+                LOGGER.info("Devices to repair ");
                 for (Device device : repairOrder.getDevices()) {
-                    logger.info("{}", device);
+                    LOGGER.info("{}", device);
                 }
             }
             if (repairOrder.getPartsOrders() != null) {
-                logger.info("Check the parts to order ");
+                LOGGER.info("Check the parts to order ");
             } else {
-                logger.info("Repairing with no orders ");
+                LOGGER.info("Repairing with no orders ");
             }
             if (repairOrder.getEstimateCost() != null) {
-                logger.info("Charge client for {} \n", repairOrder.getEstimateCost());
+                LOGGER.info("Charge client for {} \n", repairOrder.getEstimateCost());
             }
         } else if (order instanceof PartsOrder partsOrder) {
-            logger.info("{}", partsOrder);
+            LOGGER.info("{}", partsOrder);
         }
     }
 

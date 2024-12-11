@@ -16,11 +16,14 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ListIterator;
 
 public class Main {
 
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
 
@@ -37,7 +40,7 @@ public class Main {
             repairService = new RepairService
                     ("Whoop and done", "Mobile", repairServiceAddress, 400., new BigDecimal("8000"));
         } catch (AddressNotFoundException | NegativeValueException e) {
-            logger.info(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
 
         // test wrong address
@@ -45,11 +48,11 @@ public class Main {
         try {
             repairService1 = new RepairService("Whoop and done", "Mobile", checkAddress, 400., new BigDecimal("8000"));
         } catch (AddressNotFoundException | NegativeValueException e) {
-            logger.info(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
         // will fail due to the not init instance
-        // logger.info("{}", repairService1.getProfile());
-        logger.info("{}", repairService1);
+        // LOGGER.info("{}", repairService1.getProfile());
+        LOGGER.info("{}", repairService1);
 
 
         TeamLead teamLead = new TeamLead("Ali", "Baba", 18, JobPosition.TEAMLEAD, "+482322235", "Mobile");
@@ -70,23 +73,26 @@ public class Main {
         repairService.setTeamLead(teamLead);
         repairService.getTeamLead().notifyPerson("Do something");
 
-        logger.info("{}", dekiveryMan);
+        LOGGER.info("{}", dekiveryMan);
 
         Mobile device1 = new Mobile("Motorola", "G54");
         Mobile device2 = new Mobile("Samsung", "L10");
         Device device3 = new Laptop("Lenovo", "IdeaPad");
         Tablet device4 = new Tablet("Samsung", "TAB S10");
         device4.setNetworkType(NetworkType.FIVE_G);
-
         device1.setNetworkType(NetworkType.FIVE_G);
         device2.setNetworkType(NetworkType.FIVE_G);
+
+        device4.setUsbType(UsbType.USB_C);
+        device1.setUsbType(UsbType.USB_A);
+        device2.setUsbType(UsbType.USB_3_1);
 
         // when can't call        device3.getCamera()  from child class Laptop as declared Device
 
         Customer customer1 = new Customer("Abu", "Bandit", 18);
         customer1.setDevice(device1);
         customer1.setEmail("olo@gmail.com");
-        logger.info("{}", customer1);
+        LOGGER.info("{}", customer1);
 
         RepairOrder repairOrder1 = new RepairOrder();
         repairOrder1.setCustomer(customer1);
@@ -132,7 +138,7 @@ public class Main {
         try {
             corporation = new RepCorp("Fixed Enterprise", new BigDecimal("1000000000"), repairServiceAddress, 255., new BigDecimal("9000"));
         } catch (AddressNotFoundException | NegativeValueException e) {
-            logger.info(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
 
 
@@ -140,12 +146,12 @@ public class Main {
         corporation.addService(repairService);
         corporation.addService(repairService2);
         corporation.closeService(repairService2);
-        logger.info("Total repaired {}", corporation.getTotalRepaired());
+        LOGGER.info("Total repaired {}", corporation.getTotalRepaired());
 
         // compare devices
 
-        logger.info("{}", device2.equals(device2));
-        logger.info("{}", device2.equals(device1));
+        LOGGER.info("{}", device2.equals(device2));
+        LOGGER.info("{}", device2.equals(device1));
         Mobile device1Clone = new Mobile("Motorola", "G54");
         device1Clone.setNetworkType(NetworkType.FIVE_G);
 
@@ -153,10 +159,10 @@ public class Main {
         repairService.processOrder(deliverOrder);
 
         teamLead.setBonus(repairTechnician, new BigDecimal("501"));
-        logger.info("{}", repairTechnician.getBonus());
+        LOGGER.info("{}", repairTechnician.getBonus());
         // cant do it
         teamLead.setBonus(repairTechnician, new BigDecimal("500"));
-        logger.info("{}", repairTechnician.getBonus());
+        LOGGER.info("{}", repairTechnician.getBonus());
 
         accountant.setBonus(teamLead, new BigDecimal("1000"));
         accountant.setBonus(accountant, new BigDecimal("100"));
@@ -167,94 +173,103 @@ public class Main {
 
         corporation.processRent(repairService, new BigDecimal("5012"));
         corporation.stopRent(repairService2);
-        logger.info("{}", device1.onCharging());
+        LOGGER.info("{}", device1.onCharging());
         device4.charge();
-        logger.info("{}", device4.onCharging());
+        LOGGER.info("{}", device4.onCharging());
 
         try {
             // Normal data
-            logger.info("The sum of invoice -> {}", AccountingProcesses.sumOfInvoice("src/main/resources/invoice.txt"));
+            LOGGER.info("The sum of invoice -> {}", AccountingProcesses.sumOfInvoice("src/main/resources/invoice.txt"));
             // Illegal format
-//            logger.info("The sum of invoice -> {}", AccountingProcesses.sumOfInvoice("src/main/resources/test format.txtt"));
+//            LOGGER.info("The sum of invoice -> {}", AccountingProcesses.sumOfInvoice("src/main/resources/test format.txtt"));
             // wrong data
-//            logger.info("The sum of invoice -> {}", AccountingProcesses.sumOfInvoice("src/main/resources/wrongData.txt"));
+//            LOGGER.info("The sum of invoice -> {}", AccountingProcesses.sumOfInvoice("src/main/resources/wrongData.txt"));
         } catch (EmptyFileException e) {
-            logger.info(e.getMessage());
+            LOGGER.info(e.getMessage());
         } catch (CalculationRuntimeException except) {
-            logger.info("Not handled problem \n" + "Could not finish the counting -> {}", except);
+            LOGGER.info("Not handled problem \nCould not finish the counting -> {}", except);
         }
 
         CustomLinkedList<String> linkedList = new CustomLinkedList<>();
         linkedList.add("1");
         linkedList.add("2");
         for (String val : linkedList) {
-            logger.info(val);
+            LOGGER.info(val);
         }
-        logger.info("{}", Arrays.toString(linkedList.toArray()));
+        LOGGER.info("{}", Arrays.toString(linkedList.toArray()));
 
         linkedList.remove("1");
-        logger.info("{}", linkedList.getHead().getValue());
-        logger.info("{}", linkedList.getTail().getValue());
-        logger.info("{}", linkedList.getSize());
-        logger.info("{}", linkedList.isEmpty() + " 1");
+        LOGGER.info("{}", linkedList.getHead().getValue());
+        LOGGER.info("{}", linkedList.getTail().getValue());
+        LOGGER.info("{}", linkedList.getSize());
+        LOGGER.info("{}", linkedList.isEmpty() + " 1");
         linkedList.remove("1");
-        logger.info("{}", linkedList.getSize() + " 2");
-        logger.info("{}", linkedList.isEmpty());
+        LOGGER.info("{}", linkedList.getSize() + " 2");
+        LOGGER.info("{}", linkedList.isEmpty());
         linkedList.remove("2");
-        logger.info("{}", linkedList.getSize() + " 3");
-        logger.info("{}", linkedList.isEmpty());
+        LOGGER.info("{}", linkedList.getSize() + " 3");
+        LOGGER.info("{}", linkedList.isEmpty());
         linkedList.add("1");
         linkedList.add("2");
         linkedList.add("3");
-        logger.info("{}", linkedList.getSize());
+        LOGGER.info("{}", linkedList.getSize());
         linkedList.addAll(new ArrayList<>(Arrays.asList("4", "5", "6")));
-        logger.info("{}", linkedList.toString());
-        logger.info("{}", linkedList.getSize());
+        LOGGER.info("{}", linkedList);
+        LOGGER.info("{}", linkedList.getSize());
         linkedList.addAll(linkedList.size(), new ArrayList<>(Arrays.asList("1", "1", "1")));
-        logger.info("{}", linkedList.getSize());
+        LOGGER.info("{}", linkedList.getSize());
         linkedList.add(5, "10");
-        logger.info("{}", linkedList.toString());
-        logger.info("{}", linkedList.getSize());
+        LOGGER.info("{}", linkedList);
+        LOGGER.info("{}", linkedList.getSize());
         linkedList.add(0, "10");
-        logger.info("{}", linkedList.toString());
-        logger.info("{}", linkedList.getSize());
+        LOGGER.info("{}", linkedList);
+        LOGGER.info("{}", linkedList.getSize());
         linkedList.add(linkedList.size(), "10");
 
-        logger.info("{}", linkedList.toString());
-        logger.info("{}", linkedList.getSize());
+        LOGGER.info("{}", linkedList);
+        LOGGER.info("{}", linkedList.getSize());
         linkedList.remove(11);
-        logger.info("{}", linkedList.lastIndexOf("10"));
-        logger.info("{}", linkedList.toString());
-        logger.info("{}", linkedList.subList(1, 3));
+        LOGGER.info("{}", linkedList.lastIndexOf("10"));
+        LOGGER.info("{}", linkedList);
+        LOGGER.info("{}", linkedList.subList(1, 3));
 
         ListIterator<String> iterator = linkedList.listIterator();
 
         // Test hasNext and next
-        logger.info("Iterating forward:");
-        while (iterator.hasNext()) {
-            logger.info("Next: {}", iterator.next());
-        }
-        logger.info("\nIterating backward:");
-        while (iterator.hasPrevious()) {
-            logger.info("Previous: {}", iterator.previous());
-        }
-        iterator.add("Five");
-        iterator.set("Six");
-        while (iterator.hasNext()) {
-            logger.info("Next: {}", iterator.next());
-        }
+//        LOGGER.info("Iterating forward:");
+//        while (iterator.hasNext()) {
+//            LOGGER.info("Next: {}", iterator.next());
+//        }
+//        LOGGER.info("\nIterating backward:");
+//        while (iterator.hasPrevious()) {
+//            LOGGER.info("Previous: {}", iterator.previous());
+//        }
+//        iterator.add("Five");
+//        iterator.set("Six");
+//        while (iterator.hasNext()) {
+//            LOGGER.info("Next: {}", iterator.next());
+//        }
+//
+//        while (iterator.hasPrevious()) {
+//            LOGGER.info("Previous: {}", iterator.previous());
+//        }
+//        Map<String, Integer> retTxt = UniqCounter.uniqWordsTxt("src/main/resources/Financier_1109.txt");
+//        for (Map.Entry<String, Integer> entry : retTxt.entrySet()) {
+//            LOGGER.info("{}: {}", entry.getKey(), entry.getValue());
+//        }
+//
+//        Map<String, Integer> retPdf = UniqCounter.uniqWordsPdf("src/main/resources/Financier_1109.pdf");
+//        for (Map.Entry<String, Integer> entry : retPdf.entrySet()) {
+//            LOGGER.info("{}: {}", entry.getKey(), entry.getValue());
+//        }
+        executiveDirector.setSalary(teamLead, new BigDecimal("20000"));
+        executiveDirector.setSalary(teamLead, new BigDecimal("2000"));
+        executiveDirector.setSalary(teamLead, new BigDecimal("5000"));
 
-        while (iterator.hasPrevious()) {
-            logger.info("Previous: {}", iterator.previous());
-        }
-        Map<String, Integer> retTxt = UniqCounter.uniqWordsTxt("src/main/resources/Financier_1109.txt");
-        for (Map.Entry<String, Integer> entry : retTxt.entrySet()) {
-            logger.info("{}: {}", entry.getKey(), entry.getValue());
-        }
-
-        Map<String, Integer> retPdf = UniqCounter.uniqWordsPdf("src/main/resources/Financier_1109.pdf");
-        for (Map.Entry<String, Integer> entry : retPdf.entrySet()) {
-            logger.info("{}: {}", entry.getKey(), entry.getValue());
+        // possible networks data
+        for (NetworkType networkType : NetworkType.values()) {
+            LOGGER.info("{} Max speed {}, median speed {}, delay {}", networkType,
+                    networkType.getMaxSpeedMb(), networkType.getMedianSpeedMb(), networkType.getDelayMs());
         }
     }
 }

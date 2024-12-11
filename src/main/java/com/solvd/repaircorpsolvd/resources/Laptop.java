@@ -11,10 +11,20 @@ public class Laptop extends Device implements Chargeable {
     private double batteryHours;
     private boolean camera;
     private boolean charging;
-    private static final Logger logger = LoggerFactory.getLogger(Laptop.class);
+    private UsbType usbType;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Laptop.class);
 
     public Laptop(String made, String model) {
         super(made, model);
+    }
+
+    public UsbType getUsbType() {
+        return usbType;
+    }
+
+    public void setUsbType(UsbType usbType) {
+        this.usbType = usbType;
     }
 
     public double getScreenSize() {
@@ -66,13 +76,13 @@ public class Laptop extends Device implements Chargeable {
     @Override
     public void charge() {
         charging = true;
-        logger.info("{} {} is charging now", getMade(), getModel());
+        LOGGER.info("{} {} is charging now", getMade(), getModel());
     }
 
     @Override
     public void stopCharge() {
         charging = false;
-        logger.info("{} {} is not charging now", getMade(), getModel());
+        LOGGER.info("{} {} is not charging now", getMade(), getModel());
     }
 
     @Override

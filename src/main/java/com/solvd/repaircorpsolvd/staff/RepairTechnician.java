@@ -9,7 +9,7 @@ public final class RepairTechnician extends Employee {
 
     private String department;
     private Specification specification;
-    private static final Logger logger = LoggerFactory.getLogger(RepairTechnician.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RepairTechnician.class);
 
     public RepairTechnician(String name, String surname, int age, JobPosition position, String phoneNumber, String department) {
         super(name, surname, age, position, phoneNumber);
@@ -35,7 +35,7 @@ public final class RepairTechnician extends Employee {
     @Override
     public String toString() {
         String output = "\nRepairTechnician info\nID " + id + "\n" + getBaseInfo() + "\nSpecification " + specification + "\nDepartment " + department;
-        logger.info(output);
+        LOGGER.info(output);
         return output;
     }
 

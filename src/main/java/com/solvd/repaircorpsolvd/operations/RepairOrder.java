@@ -19,7 +19,7 @@ public class RepairOrder extends Order {
     private BigDecimal estimateCost;
     private DeliverOrder deliverOrder;
     private final Set<PartsOrder> partsOrders;
-    private static final Logger logger = LoggerFactory.getLogger(RepairOrder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RepairOrder.class);
 
     public RepairOrder() {
         super(IdGenerator.createId());
@@ -92,29 +92,29 @@ public class RepairOrder extends Order {
     @Override
     public void setComplete() {
         if (complete) {
-            logger.info("The repair order was already complete!{}", ID);
+            LOGGER.info("The repair order was already complete!{}", ID);
             return;
         }
         complete = true;
         repairedTime = LocalDateTime.now();
-        logger.info("The repair order is complete now {}", ID);
+        LOGGER.info("The repair order is complete now {}", ID);
     }
 
     @Override
     public void setIncomplete() {
         if (!complete) {
-            logger.info("The repair order was already incomplete!{}", ID);
+            LOGGER.info("The repair order was already incomplete!{}", ID);
             return;
         }
         complete = false;
         repairedTime = null;
-        logger.info("The repair order is incomplete now {}", ID);
+        LOGGER.info("The repair order is incomplete now {}", ID);
     }
 
     @Override
     public String toString() {
         String output = "Repair order info\nID " + ID + "\nTime " + TIME + "\n Customer " + customer.toString() + "\nEstimate Cost " + estimateCost.toString();
-        logger.info(output);
+        LOGGER.info(output);
         return output;
     }
 

@@ -12,7 +12,7 @@ public final class Customer extends Person {
 
     private Device device;
     private double discount;
-    private static final Logger logger = LoggerFactory.getLogger(Customer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Customer.class);
 
     public Customer(String name, String surname, int age) {
         super(name, surname, age, IdGenerator.createId());
@@ -37,28 +37,28 @@ public final class Customer extends Person {
     @Override
     public void notifyPerson(String remark) {
         if (phoneNumber == null || phoneNumber.isEmpty()) {
-            logger.warn("\nCan't call as customer did not give a number with\n");
+            LOGGER.warn("\nCan't call as customer did not give a number with\n");
         } else {
-            logger.info("\nMake a call to customer -> {}  with info {} \n", phoneNumber, remark);
+            LOGGER.info("\nMake a call to customer -> {}  with info {} \n", phoneNumber, remark);
             return;
         }
         if (email == null || email.isEmpty()) {
-            logger.warn("\nCan't send e-mail as customer did not give an address\n");
+            LOGGER.warn("\nCan't send e-mail as customer did not give an address\n");
         } else {
-            logger.info("\nSend e-mail to customer -> {} with info {} \n", email, remark);
+            LOGGER.info("\nSend e-mail to customer -> {} with info {} \n", email, remark);
             return;
         }
         if (address == null || address.isEmpty()) {
-            logger.warn("\nThere is no any customer's contacts, did you forget to ask for it???\n");
+            LOGGER.warn("\nThere is no any customer's contacts, did you forget to ask for it???\n");
         } else {
-            logger.info("\nSend a list to customer using address -> {}  with info {} \n", address, remark);
+            LOGGER.info("\nSend a list to customer using address -> {}  with info {} \n", address, remark);
         }
     }
 
     @Override
     public String toString() {
         String output = "\nCustomer info\nID " + id + "\n" + getBaseInfo() + "\nDiscount " + discount + "\n";
-        logger.info(output);
+        LOGGER.info(output);
         return output;
     }
 

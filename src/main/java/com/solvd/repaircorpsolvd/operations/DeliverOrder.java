@@ -21,7 +21,7 @@ public class DeliverOrder extends Order {
     private Employee deliveryMan;
     private LocalDateTime deliveredTime;
     private BigDecimal cost;
-    private static final Logger logger = LoggerFactory.getLogger(DeliverOrder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeliverOrder.class);
 
     public DeliverOrder() {
         super(IdGenerator.createId());
@@ -44,7 +44,7 @@ public class DeliverOrder extends Order {
             Addresses.addressExists(address);
             this.address = address;
         } catch (AddressNotFoundException e) {
-            logger.warn(e.getMessage());
+            LOGGER.warn(e.getMessage());
         }
     }
 
@@ -83,31 +83,31 @@ public class DeliverOrder extends Order {
     @Override
     public void setComplete() {
         if (complete) {
-            logger.info("The delivery order was already complete! {}", ID);
+            LOGGER.info("The delivery order was already complete! {}", ID);
             return;
         }
         complete = true;
         deliveryMan.setStatusReady(true);
         deliveredTime = LocalDateTime.now();
-        logger.info("The delivery order is complete now -> {}", ID);
+        LOGGER.info("The delivery order is complete now -> {}", ID);
     }
 
     @Override
     public void setIncomplete() {
         if (!complete) {
-            logger.info("The delivery order was already incomplete!{}", ID);
+            LOGGER.info("The delivery order was already incomplete!{}", ID);
             return;
         }
         complete = false;
         deliveryMan.setStatusReady(false);
         deliveredTime = null;
-        logger.info("The delivery order is incomplete now -> {}", ID);
+        LOGGER.info("The delivery order is incomplete now -> {}", ID);
     }
 
     @Override
     public String toString() {
         String output = "Delivery order info\nID " + ID + "\nWeight " + weight + "\n Address " + address + "\nDelivery day " + deliveryDay;
-        logger.info(output);
+        LOGGER.info(output);
         return output;
     }
 
