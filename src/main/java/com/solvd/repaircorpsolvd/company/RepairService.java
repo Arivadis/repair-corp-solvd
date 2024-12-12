@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class RepairService extends Building {
 
@@ -162,7 +163,16 @@ public class RepairService extends Building {
         RepairService repairService = (RepairService) object;
         return Objects.equals(name, repairService.getName()) &&
                 Objects.equals(profile, repairService.getProfile());
+    }
 
+    // custom lambda
+    private <E> void processEmployees(List<E> entries, Consumer<E> apply) {
+        entries.forEach(apply);
+    }
+
+    // func to hook in
+    public void addBonusAll(Consumer<Employee> employeesConsumer) {
+        processEmployees(employees, employeesConsumer);
     }
 
 }

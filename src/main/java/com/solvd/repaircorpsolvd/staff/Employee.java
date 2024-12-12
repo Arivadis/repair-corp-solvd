@@ -75,6 +75,7 @@ public class Employee extends Person {
 
     public void setBonus(BigDecimal bonus) {
         this.bonus = bonus;
+        LOGGER.info("Employee {} gets bonus {}", this.surname, this.bonus);
     }
 
     @Override

@@ -16,10 +16,13 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main {
 
@@ -271,5 +274,42 @@ public class Main {
             LOGGER.info("{} Max speed {}, median speed {}, delay {}", networkType,
                     networkType.getMaxSpeedMb(), networkType.getMedianSpeedMb(), networkType.getDelayMs());
         }
+
+        Consumer<Employee> addBonus = employee -> employee.setBonus(employee.getBonus().add(new BigDecimal("20")));
+        repairService.addBonusAll(addBonus);
+
+        // hard to find usage, found in the internet random string
+        Supplier<String> randomString = () -> IntStream.range(0, new Random().nextInt(40))
+                .mapToObj(i -> (char) ('a' + new Random().nextInt(26)))
+                .map(val -> String.valueOf(val)) // or (String::valueOf) by ref
+                .collect(Collectors.joining());
+        LOGGER.info(randomString.get());
+
+
+        dekiveryMan.setBonus(BigDecimal.ZERO);
+        Predicate<Employee> hasNoBonus = employee -> employee.getBonus().equals(BigDecimal.ZERO);
+        repairService.getEmployees().forEach(employee ->
+                LOGGER.info(
+                        hasNoBonus.test(employee) ?
+                                String.format("Employee %s has no bonus", employee.getSurname()) :
+                                String.format("Employee %s has bonus", employee.getSurname())
+                )
+        );
+
+        Function<Employee, String> getSalary = employee ->
+                "Employee " + employee.getSurname() +
+                        " has total " + employee.getBonus()
+                        .add(employee.getSalary());
+        repairService.getEmployees().forEach(employee -> LOGGER.info(getSalary.apply(employee)));
+
+        List<Employee> employees = repairService.getEmployees();
+        //wrap in lambda
+        Runnable toCallLater = () -> employees.forEach(employee ->
+                LOGGER.info("From runnable {}", getSalary.apply(employee))
+        );
+
+        // do something
+
+        toCallLater.run();
     }
 }
