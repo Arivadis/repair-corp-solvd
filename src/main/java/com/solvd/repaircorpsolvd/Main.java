@@ -278,7 +278,7 @@ public class Main {
         Consumer<Employee> addBonus = employee -> employee.setBonus(employee.getBonus().add(new BigDecimal("20")));
         repairService.addBonusAll(addBonus);
 
-        // hard to find usage, found in the internet random string
+        // hard to find usage for Supplier, found in the internet random string
         Supplier<String> randomString = () -> IntStream.range(0, new Random().nextInt(40))
                 .mapToObj(i -> (char) ('a' + new Random().nextInt(26)))
                 .map(val -> String.valueOf(val)) // or (String::valueOf) by ref
