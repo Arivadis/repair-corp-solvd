@@ -354,7 +354,7 @@ public class Main {
 
         String theBiggestAddress = Addresses.getAllowedAddresses().stream()
                 .map(Address::getFullAddress)
-                .max((a1, a2) -> Integer.compare(a1.length(), a2.length()))
+                .max(Comparator.comparingInt(String::length))
                 .orElse(null);
         LOGGER.info("The biggest address -> {}", theBiggestAddress);
 
