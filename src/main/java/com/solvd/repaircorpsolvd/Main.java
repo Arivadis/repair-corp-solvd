@@ -103,6 +103,9 @@ public class Main {
         repairOrder1.addDevice(device2);
         repairOrder1.addDevice(device3);
         repairOrder1.setEstimateCost(new BigDecimal("100.00"));
+        RepairOrder repairOrder2 = new RepairOrder();
+        repairOrder2.setCustomer(customer1);
+        repairOrder2.setEstimateCost(new BigDecimal("500.00"));
 
         RepairType repairType = new RepairType();
         repairType.setMaster(repairTechnician);
@@ -111,6 +114,7 @@ public class Main {
 
         repairOrder1.setRepairType(repairType);
         repairService.addRepairOrder(repairOrder1);
+        repairService.addRepairOrder(repairOrder2);
 
         PartsOrder partsOrder1 = new PartsOrder();
         partsOrder1.setCost(new BigDecimal("50.00"));
@@ -311,5 +315,31 @@ public class Main {
         // do something
 
         toCallLater.run();
+
+        repairService.getOrders()
+                .stream()
+                .map(Objects::toString)
+                .forEach(System.out::println);
+        List<Employee> hiredEmployee = repairService.getEmployees().stream()
+                .filter(Employee::getHired)
+                .toList();
+        LOGGER.info(hiredEmployee.toString());
+
+        repairService.getOrders().stream()
+                .flatMap(repairOrder -> repairOrder.getDevices().stream())
+                .forEach(System.out::println);
+
+        List<Device> allDevices = corporation.getServices().stream()
+                .flatMap(service -> service.getOrders().stream())
+                .flatMap(repairOrder -> repairOrder.getDevices().stream())
+                .peek(device -> LOGGER.info("Found new Device {}", device))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        LOGGER.info("Result {}", allDevices);
+        BigDecimal totalPrice = corporation.getServices().stream()
+                .flatMap(service -> service.getOrders().stream())
+                .map(RepairOrder::getEstimateCost)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        LOGGER.info(totalPrice.toString());
     }
 }
