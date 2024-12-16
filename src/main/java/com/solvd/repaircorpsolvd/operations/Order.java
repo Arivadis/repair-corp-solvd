@@ -38,6 +38,10 @@ public abstract class Order {
 
     public abstract void setIncomplete();
 
+    public boolean getComplete() {
+        return complete;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(ID, createTime);

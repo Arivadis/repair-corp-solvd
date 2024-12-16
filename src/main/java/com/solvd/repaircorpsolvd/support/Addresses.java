@@ -6,35 +6,38 @@ import java.util.List;
 // Class to simulate GoogleMap request
 public class Addresses {
 
-    private static final List<Address> allowedAddresses = new ArrayList<>();
+    private static final List<Address> ALLOWED_ADDRESSES = new ArrayList<>();
 
     private Addresses() {
     }
 
     public static List<Address> getAllowedAddresses() {
-        return allowedAddresses;
+        return ALLOWED_ADDRESSES;
     }
 
     public static void addAddress(Address address) {
-        allowedAddresses.add(address);
+        ALLOWED_ADDRESSES.add(address);
     }
 
     public static void addAddresses(List<Address> addressesToAdd) {
-        allowedAddresses.addAll(addressesToAdd);
+        ALLOWED_ADDRESSES.addAll(addressesToAdd);
     }
 
     public static void removeAddress(int index) {
-        allowedAddresses.remove(index);
+        ALLOWED_ADDRESSES.remove(index);
     }
 
     // Simulate the googlmap request
     public static void addressExists(Address address) throws AddressNotFoundException {
-        for (Address currentAddress : allowedAddresses) {
-            if (address.equals(currentAddress)) {
-                return;
-            }
+        Address foundAddress = ALLOWED_ADDRESSES.stream()
+                .filter(curAddress -> curAddress.equals(address))
+                .findFirst()
+                .orElse(null);
+
+        if (foundAddress == null) {
+            throw new AddressNotFoundException("Address not found " + address.getFullAddress());
         }
-        throw new AddressNotFoundException("Address not found " + address.getFullAddress());
+
     }
 
 }

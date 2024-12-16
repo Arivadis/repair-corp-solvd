@@ -4,10 +4,7 @@ import com.solvd.repaircorpsolvd.accounting.AccountingProcesses;
 import com.solvd.repaircorpsolvd.company.RepCorp;
 import com.solvd.repaircorpsolvd.company.RepairService;
 import com.solvd.repaircorpsolvd.custom_linked_list.CustomLinkedList;
-import com.solvd.repaircorpsolvd.operations.DeliverOrder;
-import com.solvd.repaircorpsolvd.operations.PartsOrder;
-import com.solvd.repaircorpsolvd.operations.RepairOrder;
-import com.solvd.repaircorpsolvd.operations.RepairType;
+import com.solvd.repaircorpsolvd.operations.*;
 import com.solvd.repaircorpsolvd.resources.*;
 import com.solvd.repaircorpsolvd.staff.*;
 import com.solvd.repaircorpsolvd.support.*;
@@ -341,5 +338,26 @@ public class Main {
                 .map(RepairOrder::getEstimateCost)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         LOGGER.info(totalPrice.toString());
+
+        Boolean allHired = repairService.getEmployees().stream()
+                .allMatch(Employee::getHired);
+        Boolean anyHired = repairService.getEmployees().stream()
+                .anyMatch(Employee::getHired);
+        Employee firstHired = repairService.getEmployees().getFirst();
+        LOGGER.info("\nAll hired {}\nAny hired {}\nFitst hired {}", allHired, anyHired, firstHired);
+        Order firstPaid = corporation.getServices().stream()
+                .flatMap(servive -> servive.getOrders().stream())
+                .filter(Order::getComplete)
+                .findFirst()
+                .orElse(null);
+        LOGGER.info(firstPaid != null ? "First paid order {}" : "No paid orders", firstPaid);
+
+        String theBiggestAddress = Addresses.getAllowedAddresses().stream()
+                .map(Address::getFullAddress)
+                .max((a1, a2) -> Integer.compare(a1.length(), a2.length()))
+                .orElse(null);
+        LOGGER.info("The biggest address -> {}", theBiggestAddress);
+
+        ReflectionExample.processReflection();
     }
 }

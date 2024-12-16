@@ -34,12 +34,10 @@ public class AccountingProcesses {
         BigDecimal finalCount = BigDecimal.ZERO;
         try {
             ArrayList<String> splittedInvoice = new ArrayList<>(Arrays.asList(formattedInvoice.split("/")));
-            for (String now : splittedInvoice) {
-                if (now.isEmpty()) {
-                    continue;
-                }
-                finalCount = finalCount.add(new BigDecimal(now));
-            }
+            finalCount = splittedInvoice.stream()
+                    .filter(now -> !now.isEmpty())
+                    .map(BigDecimal::new)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
         } catch (Exception e) {
             throw new CalculationRuntimeException("Could not finish process due to calculation error " + e);
         }

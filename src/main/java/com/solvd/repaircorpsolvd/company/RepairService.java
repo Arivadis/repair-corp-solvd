@@ -4,7 +4,6 @@ import com.solvd.repaircorpsolvd.operations.DeliverOrder;
 import com.solvd.repaircorpsolvd.operations.Order;
 import com.solvd.repaircorpsolvd.operations.PartsOrder;
 import com.solvd.repaircorpsolvd.operations.RepairOrder;
-import com.solvd.repaircorpsolvd.resources.Device;
 import com.solvd.repaircorpsolvd.staff.Employee;
 import com.solvd.repaircorpsolvd.staff.ExecutiveDirector;
 import com.solvd.repaircorpsolvd.staff.JobPosition;
@@ -18,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class RepairService extends Building {
@@ -104,34 +104,33 @@ public class RepairService extends Building {
         totalRepaired++;
     }
 
+    public Optional<Employee> findAvailableDeliveryMan() {
+        return employees.stream()
+                .filter(employee -> employee.getHired() &&
+                        employee.getPosition() == JobPosition.DELIVERY &&
+                        employee.statusReady())
+                .findFirst();
+    }
+
     public void processOrder(Order order) {
         if (order instanceof DeliverOrder deliverOrder) {
-            Employee deliveryMan = null;
-            for (Employee employee : employees) {
-                if (employee.getHired() && employee.getPosition() == JobPosition.DELIVERY && employee.statusReady()) {
-                    deliveryMan = employee;
-                    deliveryMan.setStatusReady(false);
-                    LOGGER.info("Delivery man has been set {} {} \n", deliveryMan.getName(), deliveryMan.getSurname());
-                    break;
-                }
-            }
-            if (deliveryMan != null) {
-                deliverOrder.setDeliveryMan(deliveryMan);
-                deliveryMan.notifyPerson("\nNew delivery order ->\n");
+            Optional<Employee> optiDeliveryMan = findAvailableDeliveryMan();
+            optiDeliveryMan.ifPresentOrElse(delMan -> {
+                delMan.setStatusReady(false);
+                LOGGER.info("Delivery man has been set {} {}\n", delMan.getName(), delMan.getSurname());
+                deliverOrder.setDeliveryMan(delMan);
+                delMan.notifyPerson("\nNew delivery order ->\n");
                 deliverOrder.getCustomer().notifyPerson("\n Your delivery -> " + order + "\n");
                 deliverOrder.setComplete();
-                deliveryMan.setStatusReady(true);
-            } else {
-                LOGGER.warn("Something went wrong, check an order to find issues\n");
-            }
+                delMan.setStatusReady(true);
+            }, () -> LOGGER.warn("Something went wrong, check an order to find issues\n"));
+
 
         } else if (order instanceof RepairOrder repairOrder) {
             LOGGER.info("Order date/time {} \n", repairOrder.getTIME());
             if (repairOrder.getDevices() != null) {
                 LOGGER.info("Devices to repair ");
-                for (Device device : repairOrder.getDevices()) {
-                    LOGGER.info("{}", device);
-                }
+                repairOrder.getDevices().forEach(device -> LOGGER.info("{}", device));
             }
             if (repairOrder.getPartsOrders() != null) {
                 LOGGER.info("Check the parts to order ");

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,12 +29,12 @@ public class UniqCounter {
         try {
             File bookFile = Paths.get(file).toFile();
             String book = FileUtils.readFileToString(bookFile, StandardCharsets.UTF_8);
+            Arrays.stream(book.replaceAll("[^a-zA-Z]", " ").split(" "))
+                    .toList()
+                    .stream()
+                    .filter(now -> !StringUtils.isBlank(now))
+                    .forEach(now -> uniqDict.put(now.trim().toLowerCase(), uniqDict.getOrDefault(now, 0) + 1));
 
-            for (String now : book.replaceAll("[^a-zA-Z]", " ").split(" ")) {
-                if (!StringUtils.isBlank(now)) {
-                    uniqDict.put(now.trim().toLowerCase(), uniqDict.getOrDefault(now, 0) + 1);
-                }
-            }
             File output = new File(bookFile.getParent(), "txt_unique_words.txt");
             StringBuilder dictToString = new StringBuilder("Word: counter\n");
             uniqDict.forEach((word, count) -> dictToString.append(word).append(": ").append(count).append("\n"));
@@ -50,11 +51,12 @@ public class UniqCounter {
         try (PDDocument document = Loader.loadPDF(filePath.toFile())) {
             String book = new PDFTextStripper().getText(document);
 
-            for (String now : book.replaceAll("[^a-zA-Z]", " ").split(" ")) {
-                if (!StringUtils.isBlank(now)) {
-                    uniqDict.put(now.trim().toLowerCase(), uniqDict.getOrDefault(now, 0) + 1);
-                }
-            }
+            Arrays.stream(book.replaceAll("[^a-zA-Z]", " ").split(" "))
+                    .toList()
+                    .stream()
+                    .filter(now -> !StringUtils.isBlank(now))
+                    .forEach(now -> uniqDict.put(now.trim().toLowerCase(), uniqDict.getOrDefault(now, 0) + 1));
+
             File output = new File(filePath.getParent().toFile(), "pdf_unique_words.txt");
             StringBuilder dictToString = new StringBuilder("Word: counter\n");
             uniqDict.forEach((word, count) -> dictToString.append(word).append(": ").append(count).append("\n"));

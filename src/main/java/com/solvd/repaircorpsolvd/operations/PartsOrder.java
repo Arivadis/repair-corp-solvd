@@ -99,9 +99,7 @@ public class PartsOrder extends Order {
     public String toString() {
         StringBuilder partsString = new StringBuilder();
         if (parts != null) {
-            for (Map.Entry<String, Integer> part : parts.entrySet()) {
-                partsString.append(part.getKey()).append(" ");
-            }
+            parts.keySet().forEach(key -> partsString.append(key).append(" "));
         }
         return "Parts order info \n" + partsString + "\nWarehouse " + warehouse + "\nCost " + cost;
     }

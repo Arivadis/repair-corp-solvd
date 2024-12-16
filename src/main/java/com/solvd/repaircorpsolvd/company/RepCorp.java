@@ -52,20 +52,17 @@ public class RepCorp extends Building {
     public void closeService(RepairService repairService) {
         services.remove(repairService);
         if (repairService != null) {
-            for (Employee employee : repairService.getEmployees()) {
-                if (employee.getHired()) {
-                    employee.hire();
-                }
-            }
+            repairService.getEmployees().stream()
+                    .filter(Employee::getHired)
+                    .forEach(Employee::fire);
         }
     }
 
     public int getTotalRepaired() {
-        int counter = 0;
-        for (RepairService repairService : services) {
-            counter += repairService.getTotalRepaired();
-        }
-        return counter;
+
+        return services.stream()
+                .mapToInt(RepairService::getTotalRepaired)
+                .sum();
     }
 
     @Override
