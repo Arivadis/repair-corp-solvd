@@ -4,7 +4,10 @@ import com.solvd.repaircorpsolvd.accounting.AccountingProcesses;
 import com.solvd.repaircorpsolvd.company.RepCorp;
 import com.solvd.repaircorpsolvd.company.RepairService;
 import com.solvd.repaircorpsolvd.custom_linked_list.CustomLinkedList;
-import com.solvd.repaircorpsolvd.operations.*;
+import com.solvd.repaircorpsolvd.operations.DeliverOrder;
+import com.solvd.repaircorpsolvd.operations.PartsOrder;
+import com.solvd.repaircorpsolvd.operations.RepairOrder;
+import com.solvd.repaircorpsolvd.operations.RepairType;
 import com.solvd.repaircorpsolvd.resources.*;
 import com.solvd.repaircorpsolvd.staff.*;
 import com.solvd.repaircorpsolvd.support.*;
@@ -13,12 +16,14 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
 public class Main {
@@ -265,99 +270,256 @@ public class Main {
 //        Map<String, Integer> retPdf = UniqCounter.uniqWordsPdf("src/main/resources/Financier_1109.pdf");
 //        for (Map.Entry<String, Integer> entry : retPdf.entrySet()) {
 //            LOGGER.info("{}: {}", entry.getKey(), entry.getValue());
-//        }
-        executiveDirector.setSalary(teamLead, new BigDecimal("20000"));
-        executiveDirector.setSalary(teamLead, new BigDecimal("2000"));
-        executiveDirector.setSalary(teamLead, new BigDecimal("5000"));
+////        }
+//        executiveDirector.setSalary(teamLead, new BigDecimal("20000"));
+//        executiveDirector.setSalary(teamLead, new BigDecimal("2000"));
+//        executiveDirector.setSalary(teamLead, new BigDecimal("5000"));
 
         // possible networks data
-        for (NetworkType networkType : NetworkType.values()) {
-            LOGGER.info("{} Max speed {}, median speed {}, delay {}", networkType,
-                    networkType.getMaxSpeedMb(), networkType.getMedianSpeedMb(), networkType.getDelayMs());
-        }
+//        for (NetworkType networkType : NetworkType.values()) {
+//            LOGGER.info("{} Max speed {}, median speed {}, delay {}", networkType,
+//                    networkType.getMaxSpeedMb(), networkType.getMedianSpeedMb(), networkType.getDelayMs());
+//        }
 
-        Consumer<Employee> addBonus = employee -> employee.setBonus(employee.getBonus().add(new BigDecimal("20")));
-        repairService.addBonusAll(addBonus);
+//        Consumer<Employee> addBonus = employee -> employee.setBonus(employee.getBonus().add(new BigDecimal("20")));
+//        repairService.addBonusAll(addBonus);
+//
+//        // hard to find usage for Supplier, found in the internet random string
+//        Supplier<String> randomString = () -> IntStream.range(0, new Random().nextInt(40))
+//                .mapToObj(i -> (char) ('a' + new Random().nextInt(26)))
+//                .map(val -> String.valueOf(val)) // or (String::valueOf) by ref
+//                .collect(Collectors.joining());
+//        LOGGER.info(randomString.get());
 
-        // hard to find usage for Supplier, found in the internet random string
-        Supplier<String> randomString = () -> IntStream.range(0, new Random().nextInt(40))
-                .mapToObj(i -> (char) ('a' + new Random().nextInt(26)))
-                .map(val -> String.valueOf(val)) // or (String::valueOf) by ref
-                .collect(Collectors.joining());
-        LOGGER.info(randomString.get());
 
+//        dekiveryMan.setBonus(BigDecimal.ZERO);
+//        Predicate<Employee> hasNoBonus = employee -> employee.getBonus().equals(BigDecimal.ZERO);
+//        repairService.getEmployees().forEach(employee ->
+//                LOGGER.info(
+//                        hasNoBonus.test(employee) ?
+//                                String.format("Employee %s has no bonus", employee.getSurname()) :
+//                                String.format("Employee %s has bonus", employee.getSurname())
+//                )
+//        );
 
-        dekiveryMan.setBonus(BigDecimal.ZERO);
-        Predicate<Employee> hasNoBonus = employee -> employee.getBonus().equals(BigDecimal.ZERO);
-        repairService.getEmployees().forEach(employee ->
-                LOGGER.info(
-                        hasNoBonus.test(employee) ?
-                                String.format("Employee %s has no bonus", employee.getSurname()) :
-                                String.format("Employee %s has bonus", employee.getSurname())
-                )
-        );
-
-        Function<Employee, String> getSalary = employee ->
-                "Employee " + employee.getSurname() +
-                        " has total " + employee.getBonus()
-                        .add(employee.getSalary());
-        repairService.getEmployees().forEach(employee -> LOGGER.info(getSalary.apply(employee)));
-
-        List<Employee> employees = repairService.getEmployees();
-        //wrap in lambda
-        Runnable toCallLater = () -> employees.forEach(employee ->
-                LOGGER.info("From runnable {}", getSalary.apply(employee))
-        );
+//        Function<Employee, String> getSalary = employee ->
+//                "Employee " + employee.getSurname() +
+//                        " has total " + employee.getBonus()
+//                        .add(employee.getSalary());
+//        repairService.getEmployees().forEach(employee -> LOGGER.info(getSalary.apply(employee)));
+//
+//        List<Employee> employees = repairService.getEmployees();
+//        //wrap in lambda
+//        Runnable toCallLater = () -> employees.forEach(employee ->
+//                LOGGER.info("From runnable {}", getSalary.apply(employee))
+//        );
 
         // do something
 
-        toCallLater.run();
+//        toCallLater.run();
+//
+//        repairService.getOrders()
+//                .stream()
+//                .map(Objects::toString)
+//                .forEach(System.out::println);
+//        List<Employee> hiredEmployee = repairService.getEmployees().stream()
+//                .filter(Employee::getHired)
+//                .toList();
+//        LOGGER.info(hiredEmployee.toString());
+//
+//        repairService.getOrders().stream()
+//                .flatMap(repairOrder -> repairOrder.getDevices().stream())
+//                .forEach(System.out::println);
+//
+//        List<Device> allDevices = corporation.getServices().stream()
+//                .flatMap(service -> service.getOrders().stream())
+//                .flatMap(repairOrder -> repairOrder.getDevices().stream())
+//                .peek(device -> LOGGER.info("Found new Device {}", device))
+//                .collect(Collectors.toCollection(ArrayList::new));
+//
+//        LOGGER.info("Result {}", allDevices);
+//        BigDecimal totalPrice = corporation.getServices().stream()
+//                .flatMap(service -> service.getOrders().stream())
+//                .map(RepairOrder::getEstimateCost)
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
+//        LOGGER.info(totalPrice.toString());
+//
+//        Boolean allHired = repairService.getEmployees().stream()
+//                .allMatch(Employee::getHired);
+//        Boolean anyHired = repairService.getEmployees().stream()
+//                .anyMatch(Employee::getHired);
+//        Employee firstHired = repairService.getEmployees().getFirst();
+//        LOGGER.info("\nAll hired {}\nAny hired {}\nFitst hired {}", allHired, anyHired, firstHired);
+//        Order firstPaid = corporation.getServices().stream()
+//                .flatMap(servive -> servive.getOrders().stream())
+//                .filter(Order::getComplete)
+//                .findFirst()
+//                .orElse(null);
+//        LOGGER.info(firstPaid != null ? "First paid order {}" : "No paid orders", firstPaid);
+//
+//        String theBiggestAddress = Addresses.getAllowedAddresses().stream()
+//                .map(Address::getFullAddress)
+//                .max(Comparator.comparingInt(String::length))
+//                .orElse(null);
+//        LOGGER.info("The biggest address -> {}", theBiggestAddress);
+//
+//        ReflectionExample.processReflection();
 
-        repairService.getOrders()
-                .stream()
-                .map(Objects::toString)
-                .forEach(System.out::println);
-        List<Employee> hiredEmployee = repairService.getEmployees().stream()
-                .filter(Employee::getHired)
-                .toList();
-        LOGGER.info(hiredEmployee.toString());
+        Thread thread = new Thread(() -> IntStream.range(1, 10).forEach(i -> {
+            LOGGER.info("Thread 1 -> {}", i);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                e.printStackTrace();
+            }
+        }));
 
-        repairService.getOrders().stream()
-                .flatMap(repairOrder -> repairOrder.getDevices().stream())
-                .forEach(System.out::println);
+        // or
+        // will block parallel execution due to sync try operation
 
-        List<Device> allDevices = corporation.getServices().stream()
-                .flatMap(service -> service.getOrders().stream())
-                .flatMap(repairOrder -> repairOrder.getDevices().stream())
-                .peek(device -> LOGGER.info("Found new Device {}", device))
-                .collect(Collectors.toCollection(ArrayList::new));
+        try (ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()) {
+            executorService.execute(() -> IntStream.range(100, 110).forEach(i -> {
+                LOGGER.info("Virtual Thread 1.5 -> {}", i);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    e.printStackTrace();
+                }
 
-        LOGGER.info("Result {}", allDevices);
-        BigDecimal totalPrice = corporation.getServices().stream()
-                .flatMap(service -> service.getOrders().stream())
-                .map(RepairOrder::getEstimateCost)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        LOGGER.info(totalPrice.toString());
+            }));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//
 
-        Boolean allHired = repairService.getEmployees().stream()
-                .allMatch(Employee::getHired);
-        Boolean anyHired = repairService.getEmployees().stream()
-                .anyMatch(Employee::getHired);
-        Employee firstHired = repairService.getEmployees().getFirst();
-        LOGGER.info("\nAll hired {}\nAny hired {}\nFitst hired {}", allHired, anyHired, firstHired);
-        Order firstPaid = corporation.getServices().stream()
-                .flatMap(servive -> servive.getOrders().stream())
-                .filter(Order::getComplete)
-                .findFirst()
-                .orElse(null);
-        LOGGER.info(firstPaid != null ? "First paid order {}" : "No paid orders", firstPaid);
+        Runnable runnable = () -> IntStream.range(0, 10).forEach(i -> { // or new Runnable() @Override ..
+            LOGGER.info("Thread 2 -> {}", i);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                e.printStackTrace();
+            }
+        });
 
-        String theBiggestAddress = Addresses.getAllowedAddresses().stream()
-                .map(Address::getFullAddress)
-                .max(Comparator.comparingInt(String::length))
-                .orElse(null);
-        LOGGER.info("The biggest address -> {}", theBiggestAddress);
 
-        ReflectionExample.processReflection();
+        Thread thread1 = new Thread(thread);
+        Thread thread2 = new Thread(runnable);
+
+        ExecutorService executorServiceFirst = Executors.newVirtualThreadPerTaskExecutor();
+
+        executorServiceFirst.execute(() -> {
+            // LOGGER does not see the name for virtual threads
+            Thread.currentThread().setName("Virtual thread 1.5");
+            IntStream.range(100, 110).forEach(i -> {
+                LOGGER.info("Virtual Thread 1.5 -> {}", i);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    e.printStackTrace();
+                }
+            });
+        });
+        thread1.start();
+        thread2.start();
+        executorServiceFirst.close();
+//        // fixed executor pool
+//
+        try (ExecutorService fixedExecutor = Executors.newFixedThreadPool(2)) {
+            fixedExecutor.execute(thread);
+            fixedExecutor.execute(runnable);
+        }
+
+        /*
+        or
+        fixedExecutor.execute(thread1);
+           fixedExecutor.execute(thread2);
+           */
+
+
+        Connection connection = Connection.getInstance();
+//
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        Runnable task1 = () -> LOGGER.info("Finished 1 thread -> {}", connection.mockFunc(14));
+
+        Runnable task2 = () -> LOGGER.info("Finished 2 thread -> {}", connection.mockFunc(7));
+
+        Runnable task3 = () -> LOGGER.info("Finished 3 thread -> {}", connection.mockFunc(10));
+
+        executorService.execute(task1);
+        executorService.execute(task2);
+        executorService.execute(task3);
+        executorService.close();
+
+        ExecutorService poolExecutor = Executors.newFixedThreadPool(7);
+        IntStream.range(0, 7).forEach(i -> poolExecutor.submit(() -> {
+                    Connection connect = connection.getConnection();
+                    if (connect != null) {
+                        try {
+                            String result = connect.mockFunc(3);
+                            LOGGER.info("Result -> {} \n {}", result, Thread.currentThread().getName());
+                        } catch (RuntimeException e) {
+                            e.printStackTrace();
+                        } finally {
+                            connection.releaseConnection(connect);
+                        }
+
+                    }
+                })
+        );
+        poolExecutor.close();
+
+        CompletableFuture<String> firstTask = CompletableFuture.supplyAsync(() -> {
+            try {
+                LOGGER.info("Task 1 started");
+                Thread.sleep(500);
+                return "Task 2 is finished";
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                Thread.currentThread().interrupt();
+                return "Not finished";
+            }
+        });
+
+        firstTask.thenAccept(res -> LOGGER.info("The result of first task is -> {}", res));
+
+        CompletableFuture<Void> secondTask = CompletableFuture.runAsync(() -> {
+            try {
+                LOGGER.info("Task 2 Started");
+                Thread.sleep(1000);
+                LOGGER.info("Task 2 Finished");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        CompletableFuture<Void> thirdTask = CompletableFuture.runAsync(() -> {
+            try {
+                LOGGER.info("Task 3 Started");
+                Thread.sleep(2000);
+                LOGGER.info("Task 3 Finished");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        try {
+            firstTask.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        CompletableFuture<Void> otherTasks = CompletableFuture.allOf(secondTask, thirdTask);
+        try {
+            otherTasks.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
