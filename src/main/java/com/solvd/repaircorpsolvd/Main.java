@@ -520,6 +520,10 @@ public class Main {
             e.printStackTrace();
         }
 
+        // for git conflict
+        for (int i = 0; i < 100; i++) {
+            System.out.println(i);
+        }
 
     }
 }
