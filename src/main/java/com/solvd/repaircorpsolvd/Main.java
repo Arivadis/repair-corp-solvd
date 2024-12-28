@@ -371,7 +371,7 @@ public class Main {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
             }
         }));
 
@@ -385,12 +385,12 @@ public class Main {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage());
                 }
 
             }));
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 //
 
@@ -400,7 +400,7 @@ public class Main {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
             }
         });
 
@@ -419,7 +419,7 @@ public class Main {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage());
                 }
             });
         });
@@ -462,7 +462,7 @@ public class Main {
                             String result = connect.mockFunc(3);
                             LOGGER.info("Result -> {} \n {}", result, Thread.currentThread().getName());
                         } catch (RuntimeException e) {
-                            e.printStackTrace();
+                            LOGGER.error(e.getMessage());
                         } finally {
                             connection.releaseConnection(connect);
                         }
@@ -478,7 +478,7 @@ public class Main {
                 Thread.sleep(500);
                 return "Task 2 is finished";
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
                 Thread.currentThread().interrupt();
                 return "Not finished";
             }
@@ -492,7 +492,7 @@ public class Main {
                 Thread.sleep(1000);
                 LOGGER.info("Task 2 Finished");
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
                 Thread.currentThread().interrupt();
             }
         });
@@ -503,7 +503,7 @@ public class Main {
                 Thread.sleep(2000);
                 LOGGER.info("Task 3 Finished");
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
                 Thread.currentThread().interrupt();
             }
         });
@@ -511,21 +511,20 @@ public class Main {
         try {
             firstTask.get();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         CompletableFuture<Void> otherTasks = CompletableFuture.allOf(secondTask, thirdTask);
         try {
             otherTasks.get();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         // for git conflict
         for (int i = 0; i < 100; i++) {
-            System.out.println(i);
+            LOGGER.info("{}", i);
         }
-        System.out.println(1);
-        System.out.println(2);
-
+        LOGGER.info("{}", 1);
+        LOGGER.info("{}", 2);
     }
 }
