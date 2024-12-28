@@ -66,6 +66,7 @@ public class Address {
         return Objects.hash(getCity(), getCode(), getStreet(), getNumber(), getNote());
     }
 
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
