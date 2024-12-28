@@ -41,6 +41,8 @@ public class AccountingProcesses {
         } catch (Exception e) {
             throw new CalculationRuntimeException("Could not finish process due to calculation error " + e);
         }
+
+
         LOGGER.info("Sum of invoice {}", finalCount);
 
         return finalCount;
