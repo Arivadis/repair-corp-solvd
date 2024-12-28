@@ -43,6 +43,30 @@ public class AccountingProcesses {
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
         LOGGER.info("Sum of invoice {}", finalCount);
 
         return finalCount;
